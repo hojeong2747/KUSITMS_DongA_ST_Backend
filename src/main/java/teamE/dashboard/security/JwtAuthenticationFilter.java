@@ -19,6 +19,9 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
 
     private final JwtTokenProvider jwtTokenProvider;
 
+    // JWT 토큰이 저장된 Authorization 헤더의 prefix를 체크하여 JWT 토큰을 추출하는 로직이 구현되어 있습니다.
+    // 반면, JwtAuthenticationFilter 클래스에서는 JWT 토큰 추출 로직은 JwtTokenProvider 클래스에 구현되어 있으며,
+    // resolveToken 메소드를 호출하여 JWT 토큰을 추출합니다.
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         // 헤더에서 JWT 를 받아옵니다.

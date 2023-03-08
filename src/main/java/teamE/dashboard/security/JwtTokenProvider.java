@@ -26,9 +26,10 @@ public class JwtTokenProvider {
     private String secretKey = "kusitms27th";
 
     // 토큰 유효시간 30분
-    private long tokenValidTime = 30 * 60 * 1000L;
+    private long tokenValidTime = 3 * 60 * 1000L;
+    private long refreshTokenValidTime = 1 * 60 * 1000L;
 
-    private final UserDetailsService userDetailsService;
+    private final UserService userService;
 
     // 객체 초기화, secretKey를 Base64로 인코딩한다.
     @PostConstruct
@@ -50,10 +51,23 @@ public class JwtTokenProvider {
                 .compact();
     }
 
+    public String createRefreshToken(String userPk, List<String> roles) {
+        Claims claims = Jwts.claims().setSubject(userPk); // JWT payload 에 저장되는 정보단위
+        claims.put("roles", roles); // 정보는 key / value 쌍으로 저장된다.
+        Date now = new Date();
+        return Jwts.builder()
+                .setClaims(claims) // 정보 저장
+                .setIssuedAt(now) // 토큰 발행 시간 정보
+                .setExpiration(new Date(now.getTime() + refreshTokenValidTime)) // set Expire Time
+                .signWith(SignatureAlgorithm.HS256, secretKey)  // 사용할 암호화 알고리즘과
+                // signature 에 들어갈 secret값 세팅
+                .compact();
+    }
+
     // JWT 토큰에서 인증 정보 조회
     public Authentication getAuthentication(String token) {
         log.info("5. 실제 데이터베이스에서 사용자 인증정보를 가져오는 UserDetailsService에 사용자 정보(아이디)를 넘겨줍니다.");
-        UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserPk(token));
+        UserDetails userDetails = userService.loadUserByUsername(this.getUserPk(token));
         log.info("67. AuthenticationProvider는 UserDetails를 넘겨받고 사용자 정보를 비교합니다.\n");
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
@@ -77,4 +91,14 @@ public class JwtTokenProvider {
             return false;
         }
     }
+
+    public Date jwtValidDate() {
+        Date now = new Date();
+        Date date = new Date(now.getTime() + tokenValidTime);
+        return date;
+    }
+
+
+
+
 }
