@@ -2,6 +2,7 @@ package teamE.dashboard.security;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
@@ -17,6 +18,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends GenericFilterBean {
 
+    @Autowired
     private final JwtTokenProvider jwtTokenProvider;
 
     // JWT 토큰이 저장된 Authorization 헤더의 prefix를 체크하여 JWT 토큰을 추출하는 로직이 구현되어 있습니다.
