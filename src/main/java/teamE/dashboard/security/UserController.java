@@ -55,6 +55,11 @@ public class UserController {
         return jwtTokenProvider.createToken(member.getUsername(), member.getRoles());
     }
 
+    @GetMapping("/login/form")
+    public String getLogin() {
+        return "login/loginForm";
+    }
+
     @PostMapping("/login/form")
     public JwtTokenDto login(@RequestBody UserLoginDto user, HttpSession session) {
         User member = userRepository.findByEmail(user.getLoginId())
