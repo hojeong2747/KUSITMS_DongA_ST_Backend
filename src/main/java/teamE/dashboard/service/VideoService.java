@@ -1,6 +1,7 @@
 package teamE.dashboard.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import teamE.dashboard.entity.Video;
@@ -25,6 +26,9 @@ public class VideoService {
         return videoRepository.findById(videoId).get();
     }
 
+    public List<Video> findTop3Videos() {
+        return videoRepository.findAll(Sort.by(Sort.Direction.DESC, "hit"));
+    }
 
 
 }

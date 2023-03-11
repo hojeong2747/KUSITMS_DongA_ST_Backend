@@ -21,19 +21,8 @@ public class VideoController {
     private final VideoService videoService;
 
     // 영상 조회
-//    @GetMapping("videos")
-//    public Result getVideos() {
-//        List<Video> findVideos = videoService.findVideos();
-//
-//        List<VideoDto> collect = findVideos.stream()
-//                .map(m -> new VideoDto(m.getTitle(), m.getLength(), m.getHit(), m.getThumbnail()))
-//                .collect(Collectors.toList());
-//
-//        return new Result(collect);
-//    }
-
     @GetMapping("videos")
-    public ResponseEntity<Result> getVideos2() {
+    public ResponseEntity<Result> getVideos() {
         List<Video> findVideos = videoService.findVideos();
 
         List<VideoDto> collect = findVideos.stream()
@@ -43,6 +32,21 @@ public class VideoController {
         return new ResponseEntity<>(new Result(collect), HttpStatus.OK);
 
     }
+
+    // top3 영상 조회
+    @GetMapping("videos/top3")
+    public ResponseEntity<Result> getTop3Videos() {
+        List<Video> findVideos = videoService.findTop3Videos();
+
+        List<VideoDto> collect = findVideos.stream()
+                .map(m -> new VideoDto(m.getTitle(), m.getLength(), m.getHit(), m.getThumbnail()))
+                .limit(3) // 3개만
+                .collect(Collectors.toList());
+
+        return new ResponseEntity<>(new Result(collect), HttpStatus.OK);
+
+    }
+
 
     @Data
     @AllArgsConstructor
@@ -57,7 +61,6 @@ public class VideoController {
         private String length;
         private int hit;
         private String thumbnail;
-
     }
 
 
