@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -132,5 +133,7 @@ public class UserController {
     @GetMapping("/count")
     public int getCount() {
         return SessionUserCounter.getCount();
+//        return CustomHttpSessionListener.getSessions();
     }
+
 }

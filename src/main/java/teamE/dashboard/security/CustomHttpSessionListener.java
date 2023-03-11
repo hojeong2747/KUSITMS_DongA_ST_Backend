@@ -1,14 +1,21 @@
 package teamE.dashboard.security;
 
+import lombok.extern.slf4j.Slf4j;
+import org.hibernate.Session;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Slf4j
 //@Component
 public class CustomHttpSessionListener implements HttpSessionListener {
 
@@ -18,6 +25,7 @@ public class CustomHttpSessionListener implements HttpSessionListener {
     public void sessionCreated(HttpSessionEvent event) {
         HttpSession session = event.getSession();
         sessions.put(session.getId(), session);
+        log.info("sessions - SESSION CREATED : {}", session.getId());
     }
 
     @Override
@@ -26,8 +34,26 @@ public class CustomHttpSessionListener implements HttpSessionListener {
         sessions.remove(session.getId());
     }
 
-    public static Collection<HttpSession> getSessions() {
-        return sessions.values();
+    public static List<String> getSessions() {
+
+        Collection<HttpSession> values = sessions.values();
+
+        for (HttpSession value : values) {
+
+        }
+
+        List<String> names = new ArrayList<>();
+
+        for (HttpSession value : values) {
+            UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            names.add(principal.getUsername());
+        }
+
+        return names;
+    }
+
+    public static List<String> getUsers() {
+        return null;
     }
 
 }
