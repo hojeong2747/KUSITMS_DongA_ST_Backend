@@ -2,6 +2,7 @@ package teamE.dashboard.security;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -14,9 +15,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
+
+import static org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY;
 
 @Slf4j
-//@Component
+@Component
 public class CustomHttpSessionListener implements HttpSessionListener {
 
     private static final Map<String, HttpSession> sessions = new ConcurrentHashMap<>();
@@ -38,15 +42,12 @@ public class CustomHttpSessionListener implements HttpSessionListener {
 
         Collection<HttpSession> values = sessions.values();
 
-        for (HttpSession value : values) {
-
-        }
-
         List<String> names = new ArrayList<>();
 
         for (HttpSession value : values) {
-            UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            names.add(principal.getUsername());
+
+            SecurityContext springSecurityContextKey = (SecurityContext) value.getAttribute(SPRING_SECURITY_CONTEXT_KEY);
+            names.add(springSecurityContextKey.getAuthentication().getName());
         }
 
         return names;
