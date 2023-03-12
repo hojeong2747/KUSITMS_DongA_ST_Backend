@@ -17,6 +17,7 @@ public class Video {
 
     private String title;
     private String length;
+    private String date;
     private int hit;
     private String thumbnail;
 
