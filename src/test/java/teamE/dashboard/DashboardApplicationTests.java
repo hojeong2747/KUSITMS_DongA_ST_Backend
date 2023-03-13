@@ -6,7 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import teamE.dashboard.security.AwsS3Service;
+import teamE.dashboard.config.aws.AwsS3Service;
 
 @Slf4j
 @SpringBootTest

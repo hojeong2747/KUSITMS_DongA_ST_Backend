@@ -1,4 +1,4 @@
-package teamE.dashboard.security;
+package teamE.dashboard.security.user;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

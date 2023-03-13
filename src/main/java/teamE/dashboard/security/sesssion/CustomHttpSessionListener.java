@@ -1,4 +1,4 @@
-package teamE.dashboard.security;
+package teamE.dashboard.security.sesssion;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;

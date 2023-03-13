@@ -1,4 +1,4 @@
-package teamE.dashboard.security;
+package teamE.dashboard.security.jwt;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

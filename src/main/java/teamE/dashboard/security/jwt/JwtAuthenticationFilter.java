@@ -1,4 +1,4 @@
-package teamE.dashboard.security;
+package teamE.dashboard.security.jwt;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
