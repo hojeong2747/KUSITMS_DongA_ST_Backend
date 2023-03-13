@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -34,7 +35,8 @@ public class UserController {
     // 회원가입
     @ApiOperation(value = "회원 등록", notes = "회원 가입")
     @PostMapping("/join")
-    public Long join(@ApiParam(value = "유저", required = true) @RequestBody Map<String, String> user) {
+    public Long join(@ApiParam(value = "유저", required = true)
+                         @RequestBody Map<String, String> user) {
         return userRepository.save(User.builder()
                 .email(user.get("email"))
                 .password(passwordEncoder.encode(user.get("password")))
@@ -46,7 +48,8 @@ public class UserController {
     // 로그인
     @ApiOperation(value = "로그인", notes = "로그인")
     @PostMapping("/login")
-    public String login(@ApiParam(value = "유저", required = true) @RequestBody Map<String, String> user) {
+    public String login(@ApiParam(value = "유저", required = true)
+                            @RequestBody Map<String, String> user) {
         User member = userRepository.findByEmail(user.get("email"))
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 E-MAIL 입니다."));
         if (!passwordEncoder.matches(user.get("password"), member.getPassword())) {
@@ -130,7 +133,9 @@ public class UserController {
 
 
     @GetMapping("/count")
-    public int getCount() {
-        return SessionUserCounter.getCount();
+    public List<String> getCount() {
+//        return SessionUserCounter.getCount();
+        return CustomHttpSessionListener.getSessions();
     }
+
 }
