@@ -33,6 +33,7 @@ public class UserController {
     private final UserTokenService userTokenService;
     private final RefreshTokenRepository refreshTokenRepository;
     private final AuthenticationManager authenticationManager;
+    private final UserService userService;
 
     // 회원가입
     @ApiOperation(value = "회원 등록", notes = "회원 가입")
@@ -138,6 +139,11 @@ public class UserController {
     public List<String> getCount() {
 //        return SessionUserCounter.getCount();
         return CustomHttpSessionListener.getSessions();
+    }
+
+    @GetMapping("/{username}")
+    public String getProfile(@PathVariable String username) {
+        return userService.loadProfileImgByUsername(username);
     }
 
 }

@@ -20,5 +20,10 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
     }
 
+    public String loadProfileImgByUsername(String username) {
+        return userRepository.findProfileImgByEmail(username)
+                .orElseThrow(() -> new IllegalStateException("profile null"));
+    }
+
 
 }

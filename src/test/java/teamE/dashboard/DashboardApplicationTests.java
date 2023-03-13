@@ -29,7 +29,7 @@ class DashboardApplicationTests {
     @DisplayName("저장된 이미지(볼펜) 찾기")
     @Test
     public void findImg() {
-        String imgPath = s3UploadService.getThumbnailPath("pl.jpg");
+        String imgPath = s3UploadService.getThumbnailPath("pl.png");
         log.info(imgPath);
         Assertions.assertThat(imgPath).isNotNull();
     }
