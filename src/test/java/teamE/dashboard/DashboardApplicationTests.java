@@ -1,6 +1,6 @@
 package teamE.dashboard;
 
-import lombok.extern.slf4j.Slf4j;
+//import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import teamE.dashboard.config.aws.AwsS3Service;
 
-@Slf4j
+//@Slf4j
 @SpringBootTest
 class DashboardApplicationTests {
 
@@ -30,7 +30,7 @@ class DashboardApplicationTests {
     @Test
     public void findImg() {
         String imgPath = s3UploadService.getThumbnailPath("pl.png");
-        log.info(imgPath);
+//        log.info(imgPath);
         Assertions.assertThat(imgPath).isNotNull();
     }
 
