@@ -3,21 +3,21 @@ os: linux
 
 files:
   - source:  /
-    destination: /home/ubuntu/app
+    destination: /home/ubuntu
     overwrite: yes
 
 permissions:
-  - object: /
+  - object: /home/ubuntu
     pattern: "**"
-    owner: root
-    group: root
+    owner: ubuntu
+    group: ubuntu
 
 hooks:
   AfterInstall:
     - location: scripts/stop.sh
       timeout: 60
-      runas: ubuntu
+      runas: root
   ApplicationStart:
     - location: scripts/start.sh
       timeout: 60
-      runas: ubuntu
+      runas: root
