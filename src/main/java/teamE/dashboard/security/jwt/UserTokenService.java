@@ -1,9 +1,13 @@
-package teamE.dashboard.security;
+package teamE.dashboard.security.jwt;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import teamE.dashboard.security.jwt.*;
+import teamE.dashboard.security.user.User;
+import teamE.dashboard.security.user.UserRepository;
+
 @Service
 @Transactional
 @RequiredArgsConstructor

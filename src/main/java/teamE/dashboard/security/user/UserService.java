@@ -1,4 +1,4 @@
-package teamE.dashboard.security;
+package teamE.dashboard.security.user;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +18,11 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
+    }
+
+    public String loadProfileImgByUsername(String username) {
+        return userRepository.findProfileImgByEmail(username)
+                .orElseThrow(() -> new IllegalStateException("profile null"));
     }
 
 

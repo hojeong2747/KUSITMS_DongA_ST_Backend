@@ -1,4 +1,4 @@
-package teamE.dashboard.security;
+package teamE.dashboard.security.user;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -12,9 +12,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.web.bind.annotation.*;
+import teamE.dashboard.security.jwt.*;
+import teamE.dashboard.security.sesssion.CustomHttpSessionListener;
+import teamE.dashboard.security.user.dto.UserLoginDto;
 
 import javax.servlet.http.HttpSession;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +33,7 @@ public class UserController {
     private final UserTokenService userTokenService;
     private final RefreshTokenRepository refreshTokenRepository;
     private final AuthenticationManager authenticationManager;
+    private final UserService userService;
 
     // 회원가입
     @ApiOperation(value = "회원 등록", notes = "회원 가입")
@@ -136,6 +139,11 @@ public class UserController {
     public List<String> getCount() {
 //        return SessionUserCounter.getCount();
         return CustomHttpSessionListener.getSessions();
+    }
+
+    @GetMapping("/{username}")
+    public String getProfile(@PathVariable String username) {
+        return userService.loadProfileImgByUsername(username);
     }
 
 }
