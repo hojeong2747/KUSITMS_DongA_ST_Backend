@@ -1,28 +1,20 @@
-package teamE.dashboard.security.user;
+package teamE.dashboard.security;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
-import org.springframework.web.bind.annotation.*;
-import teamE.dashboard.security.jwt.*;
-import teamE.dashboard.security.sesssion.CustomHttpSessionListener;
-import teamE.dashboard.security.user.dto.UserLoginDto;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpSession;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
-@Slf4j
-@Api(tags = {"1.User"})
+@Api(tags={"1.User"})
 @RequiredArgsConstructor
 @RestController
 public class UserController {
@@ -32,14 +24,11 @@ public class UserController {
     private final UserRepository userRepository;
     private final UserTokenService userTokenService;
     private final RefreshTokenRepository refreshTokenRepository;
-    private final AuthenticationManager authenticationManager;
-    private final UserService userService;
 
     // 회원가입
-    @ApiOperation(value = "회원 등록", notes = "회원 가입")
+    @ApiOperation(value="회원 등록",notes="회원 가입")
     @PostMapping("/join")
-    public Long join(@ApiParam(value = "유저", required = true)
-                         @RequestBody Map<String, String> user) {
+    public Long join(@ApiParam(value="유저",required = true) @RequestBody Map<String, String> user) {
         return userRepository.save(User.builder()
                 .username(user.get("username"))
                 .password(passwordEncoder.encode(user.get("password")))
@@ -51,11 +40,16 @@ public class UserController {
     }
 
     // 로그인
-    @ApiOperation(value = "로그인", notes = "로그인")
+    @ApiOperation(value="로그인",notes="로그인")
     @PostMapping("/login")
+<<<<<<< HEAD:src/main/java/teamE/dashboard/security/UserController.java
+    public String login(@ApiParam(value="유저",required = true) @RequestBody Map<String, String> user) {
+        User member = userRepository.findByEmail(user.get("email"))
+=======
     public String login(@ApiParam(value = "유저", required = true)
                             @RequestBody Map<String, String> user) {
         User member = userRepository.findByUsername(user.get("username"))
+>>>>>>> 6ab692f ([feat] join,login entity,dto 변경):src/main/java/teamE/dashboard/security/user/UserController.java
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 E-MAIL 입니다."));
         if (!passwordEncoder.matches(user.get("password"), member.getPassword())) {
             throw new IllegalArgumentException("잘못된 비밀번호입니다.");
@@ -63,12 +57,18 @@ public class UserController {
         return jwtTokenProvider.createToken(member.getUsername(), member.getRoles());
     }
 
-    @GetMapping("/login/form")
-    public String getLogin() {
-        return "login/loginForm";
-    }
-
     @PostMapping("/login/form")
+<<<<<<< HEAD:src/main/java/teamE/dashboard/security/UserController.java
+    public JwtTokenDto login(@RequestBody UserLoginDto user) {
+        User member = userRepository.findByEmail(user.getLoginId())
+                .orElseThrow(() -> new IllegalStateException());
+        JwtTokenDto jwtTokenDto = new JwtTokenDto();
+        if (!passwordEncoder.matches(user.getLoginPw(), member.getPassword())) {
+            throw new IllegalArgumentException("잘못된 비밀번호입니다.");
+        }
+
+        RefreshToken oldRefreshToken = refreshTokenRepository.findByEmail(member.getEmail())
+=======
     public JwtTokenDto login(@RequestBody UserLoginDto user, HttpSession session) {
         User member = userRepository.findByUsername(user.getUsername())
                 .orElseThrow(() -> new IllegalStateException());
@@ -91,9 +91,21 @@ public class UserController {
         // jwt
         JwtTokenDto jwtTokenDto = new JwtTokenDto();
         RefreshToken oldRefreshToken = refreshTokenRepository.findByUsername(member.getUsername())
+>>>>>>> 6ab692f ([feat] join,login entity,dto 변경):src/main/java/teamE/dashboard/security/user/UserController.java
                 .orElseGet(RefreshToken::new);
         oldRefreshToken.setUsername(member.getUsername());
 
+<<<<<<< HEAD:src/main/java/teamE/dashboard/security/UserController.java
+        if(oldRefreshToken == null) {
+            oldRefreshToken.setToken(jwtTokenProvider.createRefreshToken(member.getEmail(),member.getRoles()));
+            refreshTokenRepository.save(oldRefreshToken);
+            jwtTokenDto.updateRefreshToken(oldRefreshToken);
+        }
+
+        else {
+            jwtTokenDto.setAccessToken(jwtTokenProvider.createToken(member.getEmail(), member.getRoles()));
+            jwtTokenDto.setRefreshToken(jwtTokenProvider.createRefreshToken(member.getEmail(), member.getRoles()));
+=======
         if (oldRefreshToken == null) {
             log.info("oldRefresh");
             oldRefreshToken.setToken(jwtTokenProvider.createRefreshToken(member.getUsername(), member.getRoles()));
@@ -103,49 +115,35 @@ public class UserController {
             log.info("not oldRefresh");
             jwtTokenDto.setAccessToken(jwtTokenProvider.createToken(member.getUsername(), member.getRoles()));
             jwtTokenDto.setRefreshToken(jwtTokenProvider.createRefreshToken(member.getUsername(), member.getRoles()));
+>>>>>>> 6ab692f ([feat] join,login entity,dto 변경):src/main/java/teamE/dashboard/security/user/UserController.java
             jwtTokenDto.setDate(jwtTokenProvider.jwtValidDate());
             RefreshToken refreshToken = new RefreshToken(member.getUsername(), jwtTokenDto.getRefreshToken());
             oldRefreshToken.updateToken(refreshToken.getToken());
             refreshTokenRepository.save(oldRefreshToken);
         }
 
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserDetails userDetails = (UserDetails) principal;
-
-        log.info( "welcome"+ ((UserDetails) principal).getUsername() );
-
         return jwtTokenDto;
     }
+
+
+
 
 
     @PostMapping("/user/resource")
     public String hi() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserDetails userDetails = (UserDetails) principal;
+        UserDetails userDetails = (UserDetails)principal;
 
         return ((UserDetails) principal).getUsername();
     }
 
     @PostMapping("/reissue")
     public JwtTokenDto refreshToken(@RequestHeader(value = "ACCESS-TOKEN") String accessToken,
-                                    @RequestHeader(value = "REFRESH-TOKEN") String refreshToken) {
+                                    @RequestHeader(value = "REFRESH-TOKEN") String refreshToken ) {
         RequestTokenDto requestTokenDto = new RequestTokenDto(accessToken, refreshToken);
 
         JwtTokenDto jwtTokenDto = userTokenService.reissue(requestTokenDto);
 
         return jwtTokenDto;
     }
-
-
-    @GetMapping("/count")
-    public List<String> getCount() {
-//        return SessionUserCounter.getCount();
-        return CustomHttpSessionListener.getSessions();
-    }
-
-    @GetMapping("/{username}")
-    public String getProfile(@PathVariable String username) {
-        return userService.loadProfileImgByUsername(username);
-    }
-
 }

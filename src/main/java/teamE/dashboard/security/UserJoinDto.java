@@ -1,4 +1,4 @@
-package teamE.dashboard.security.user.dto;
+package teamE.dashboard.security;
 
 import lombok.Data;
 
