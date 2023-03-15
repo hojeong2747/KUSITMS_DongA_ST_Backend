@@ -1,4 +1,4 @@
-package teamE.dashboard.security;
+package teamE.dashboard.security.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -9,8 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
+import teamE.dashboard.security.user.UserService;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;

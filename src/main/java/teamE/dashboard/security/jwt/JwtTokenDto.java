@@ -1,4 +1,4 @@
-package teamE.dashboard.security;
+package teamE.dashboard.security.jwt;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

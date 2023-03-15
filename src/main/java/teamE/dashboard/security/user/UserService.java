@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService implements UserDetailsService {
 
+    @Autowired
     private final UserRepository userRepository;
 
     @Override
@@ -18,13 +19,10 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
     }
 
-<<<<<<< HEAD:src/main/java/teamE/dashboard/security/UserService.java
-=======
     public String loadProfileImgByUsername(String username) {
         return userRepository.findProfileImgByUsername(username)
                 .orElseThrow(() -> new IllegalStateException("profile null"));
     }
 
->>>>>>> 6ab692f ([feat] join,login entity,dto 변경):src/main/java/teamE/dashboard/security/user/UserService.java
 
 }
