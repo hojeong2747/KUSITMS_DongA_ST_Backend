@@ -9,10 +9,10 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long> {
     //    User findByUsername(String username);
 //    Optional<User> findByLoginId(String email);
-    Optional<User> findByEmail(String email);
+    Optional<User> findByUsername(String username);
 
-    @Query("select u.profileImg from User u where u.email=:email")
-    Optional<String> findProfileImgByEmail(@Param(value="email") String email);
+    @Query("select u.profileImg from User u where u.username=:username")
+    Optional<String> findProfileImgByUsername(@Param(value="username") String username);
 
 
 }
