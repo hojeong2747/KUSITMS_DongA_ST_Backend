@@ -11,7 +11,7 @@ import java.util.List;
 public class part2ByNonMedicalRes {
 
     private String subject;
-    private int hits;
+    private String hits;
 
 
 }

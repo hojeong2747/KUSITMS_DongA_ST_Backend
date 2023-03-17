@@ -11,6 +11,6 @@ import java.util.List;
 public class part2ByDiseaseRes {
 
     private String subject;
-    private int hits;
+    private String hits;
 
 }
