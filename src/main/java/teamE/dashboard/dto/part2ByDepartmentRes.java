@@ -9,8 +9,8 @@ import teamE.dashboard.entity.Department;
 @NoArgsConstructor
 public class part2ByDepartmentRes {
 
-    private Department department;
-    private long hits;
+    private String department;
+    private String hits;
 
 
 }

@@ -10,6 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import teamE.dashboard.dto.part2ByDepartmentRes;
+import teamE.dashboard.dto.part2ByDiseaseRes;
+import teamE.dashboard.dto.part2ByNonMedicalRes;
 import teamE.dashboard.entity.Video;
 import teamE.dashboard.repository.VideoRepository;
 import teamE.dashboard.service.VideoService;
@@ -62,22 +65,22 @@ public class VideoController {
 //        return new ResponseEntity<>(videoRepository.findHitsByDepartment(),HttpStatus.OK);
 //    }
     @GetMapping("videos/topdepartment")
-    public ResponseEntity<List<String>> getDepartmentTop7hits() {
+    public ResponseEntity<List<part2ByDepartmentRes>> getDepartmentTop7hits() {
 
-        return new ResponseEntity<>(videoRepository.findHitsByDepartment(),HttpStatus.OK);
+        return new ResponseEntity<>(videoService.getHitsByDepartment(),HttpStatus.OK);
     }
 
     @ApiOperation(value = "video 진료과목별 top5 조회", notes = "live 진료과목 별 top5 조회")
     @GetMapping("videos/topdisease")
-    public ResponseEntity<List<String>> getDiseaseTop7hits() {
+    public ResponseEntity<List<part2ByDiseaseRes>> getDiseaseTop7hits() {
 
-        return new ResponseEntity<>(videoRepository.findHitsByDisease(),HttpStatus.OK);
+        return new ResponseEntity<>(videoService.getHitsByDisease(),HttpStatus.OK);
     }
     @ApiOperation(value = "video 질환별 top5 조회", notes = "video 질환별 top5 조회")
     @GetMapping("videos/topnonmedical")
-    public ResponseEntity<List<String>> getNonMedicalTop7hits() {
+    public ResponseEntity<List<part2ByNonMedicalRes>> getNonMedicalTop7hits() {
 
-        return new ResponseEntity<>(videoRepository.findHitsByNonMedical(),HttpStatus.OK);
+        return new ResponseEntity<>(videoService.getHitsByNonMedical(),HttpStatus.OK);
     }
 
 
