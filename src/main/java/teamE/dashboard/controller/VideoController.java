@@ -6,11 +6,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import teamE.dashboard.dto.part2ByDepartmentRes;
+import teamE.dashboard.dto.part2ByDiseaseRes;
 import teamE.dashboard.entity.Video;
+import teamE.dashboard.repository.VideoRepository;
 import teamE.dashboard.service.VideoService;
 
 import javax.xml.transform.Result;
@@ -22,6 +26,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 public class VideoController {
+    private final VideoRepository videoRepository;
 
     private final VideoService videoService;
 
@@ -52,6 +57,23 @@ public class VideoController {
 
         return new ResponseEntity<>(new Result(collect), HttpStatus.OK);
 
+    }
+
+//    @GetMapping("videos/topdepartment")
+//    public ResponseEntity<List<part2ByDepartmentRes>> getDepartmentTop7hits() {
+//
+//        return new ResponseEntity<>(videoRepository.findHitsByDepartment(),HttpStatus.OK);
+//    }
+    @GetMapping("videos/topdepartment")
+    public ResponseEntity<List<String>> getDepartmentTop7hits() {
+
+        return new ResponseEntity<>(videoRepository.findHitsByDepartment(),HttpStatus.OK);
+    }
+
+    @GetMapping("videos/topdisease")
+    public ResponseEntity<List<String>> getDiseaseTop7hits() {
+
+        return new ResponseEntity<>(videoRepository.findHitsByDisease(),HttpStatus.OK);
     }
 
 

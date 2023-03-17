@@ -4,9 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import teamE.dashboard.dto.part2ByDepartmentRes;
 import teamE.dashboard.entity.Video;
 import teamE.dashboard.repository.VideoRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service

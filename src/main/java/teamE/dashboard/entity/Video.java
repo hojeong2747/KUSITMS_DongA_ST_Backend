@@ -24,4 +24,8 @@ public class Video {
     @Enumerated(EnumType.STRING)
     private Disease disease;
 
+    public Video() {
+    }
+
+
 }
