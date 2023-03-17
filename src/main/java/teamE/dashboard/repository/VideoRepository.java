@@ -20,11 +20,13 @@ public interface VideoRepository extends JpaRepository<Video, Long> {
 //            "order by sum(v.hit) desc")
 //    List<part2ByDepartmentRes> findHitsByDepartment();
 
-    @Query(nativeQuery = true, value = "select department, sum(hit) / (select sum(hit) from video ) * 100 from video group by video.department order by sum(hit) desc LIMIT 0,7")
+    @Query(nativeQuery = true, value = "select department, sum(hit) / (select sum(hit) from video ) * 100 from video where video.status=0 group by video.department order by sum(hit) desc LIMIT 0,7 ")
     List<String> findHitsByDepartment();
 
-    @Query(nativeQuery = true, value = "select disease, sum(hit) / (select sum(hit) from video ) * 100 from video group by video.disease order by sum(hit) desc LIMIT 0,7")
+    @Query(nativeQuery = true, value = "select disease, sum(hit) / (select sum(hit) from video ) * 100 from video where video.status=0 group by video.disease order by sum(hit) desc LIMIT 0,7 ")
     List<String> findHitsByDisease();
+    @Query(nativeQuery = true, value = "select non_medical, sum(hit) / (select sum(hit) from video ) * 100 from video where video.status=1 group by video.non_medical order by sum(hit) desc LIMIT 0,5 ")
+    List<String> findHitsByNonMedical();
 
 
 

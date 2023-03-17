@@ -75,6 +75,11 @@ public class VideoController {
 
         return new ResponseEntity<>(videoRepository.findHitsByDisease(),HttpStatus.OK);
     }
+    @GetMapping("videos/topnonmedical")
+    public ResponseEntity<List<String>> getNonMedicalTop7hits() {
+
+        return new ResponseEntity<>(videoRepository.findHitsByNonMedical(),HttpStatus.OK);
+    }
 
 
     @Data
