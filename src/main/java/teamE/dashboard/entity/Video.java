@@ -2,10 +2,7 @@ package teamE.dashboard.entity;
 
 import lombok.Getter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Getter
 @Entity
@@ -20,5 +17,11 @@ public class Video {
     private String date;
     private int hit;
     private String thumbnail;
+
+    @Enumerated(EnumType.STRING)
+    private Department department;
+
+    @Enumerated(EnumType.STRING)
+    private Disease disease;
 
 }
