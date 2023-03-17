@@ -18,11 +18,17 @@ public class Video {
     private int hit;
     private String thumbnail;
 
+    private int status; // 0 진료 1 비진료
+
     @Enumerated(EnumType.STRING)
     private Department department;
 
     @Enumerated(EnumType.STRING)
     private Disease disease;
+
+    @Enumerated(EnumType.STRING)
+    private NonMedical nonMedical;
+
 
     public Video() {
     }
