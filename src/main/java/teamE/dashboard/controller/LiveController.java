@@ -10,11 +10,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import teamE.dashboard.dto.part2ByDepartmentRes;
-import teamE.dashboard.dto.part2ByDiseaseRes;
-import teamE.dashboard.dto.part2ByNonMedicalRes;
+import teamE.dashboard.entity.Live;
 import teamE.dashboard.entity.Video;
+import teamE.dashboard.repository.LiveRepository;
 import teamE.dashboard.repository.VideoRepository;
+import teamE.dashboard.service.LiveService;
 import teamE.dashboard.service.VideoService;
 
 import java.util.List;
@@ -24,19 +24,19 @@ import java.util.stream.Collectors;
 @Api(tags = {"2.Video"})
 @RestController
 @RequiredArgsConstructor
-public class VideoController {
-    private final VideoRepository videoRepository;
+public class LiveController {
+    private final LiveRepository liveRepository;
 
-    private final VideoService videoService;
+    private final LiveService liveService;
 
     // 영상 조회
     @ApiOperation(value = "영상 전체 조회", notes = "영상 전체 조회")
-    @GetMapping("videos")
+    @GetMapping("lives")
     public ResponseEntity<Result> getVideos() {
-        List<Video> findVideos = videoService.findVideos();
+        List<Live> findVideos = liveService.findVideos();
 
-        List<VideoDto> collect = findVideos.stream()
-                .map(m -> new VideoDto(m.getTitle(), m.getLength(), m.getDate(), m.getHit(), m.getThumbnail()))
+        List<LiveDto> collect = findVideos.stream()
+                .map(m -> new LiveDto(m.getTitle(), m.getLength(), m.getDate(), m.getHit(), m.getThumbnail()))
                 .collect(Collectors.toList());
 
         return new ResponseEntity<>(new Result(collect), HttpStatus.OK);
@@ -45,12 +45,12 @@ public class VideoController {
 
     // top3 영상 조회
     @ApiOperation(value = "영상 top3 조회", notes = "영상 top3 조회")
-    @GetMapping("videos/top3")
+    @GetMapping("lives/top3")
     public ResponseEntity<Result> getTop3Videos() {
-        List<Video> findVideos = videoService.findTop3Videos();
+        List<Live> findVideos = liveService.findTop3Videos();
 
-        List<VideoDto> collect = findVideos.stream()
-                .map(m -> new VideoDto(m.getTitle(), m.getLength(), m.getDate(), m.getHit(), m.getThumbnail()))
+        List<LiveDto> collect = findVideos.stream()
+                .map(m -> new LiveDto(m.getTitle(), m.getLength(), m.getDate(), m.getHit(), m.getThumbnail()))
                 .limit(3) // 3개만
                 .collect(Collectors.toList());
 
@@ -58,41 +58,37 @@ public class VideoController {
 
     }
 
-
 //    @GetMapping("videos/topdepartment")
 //    public ResponseEntity<List<part2ByDepartmentRes>> getDepartmentTop7hits() {
 //
 //        return new ResponseEntity<>(videoRepository.findHitsByDepartment(),HttpStatus.OK);
 //    }
-    @GetMapping("videos/topdepartment")
-    public ResponseEntity<List<part2ByDepartmentRes>> getDepartmentTop7hits() {
 
-        return new ResponseEntity<>(videoService.getHitsByDepartment(),HttpStatus.OK);
+    @ApiOperation(value = "live 진료과목별 top5 조회", notes = "live 진료과목 별 top5 조회")
+    @GetMapping("lives/topdepartment")
+    public ResponseEntity<List<String>> getDepartmentTop5hits() {
+
+        return new ResponseEntity<>(liveRepository.findHitsByDepartment(),HttpStatus.OK);
     }
 
-    @ApiOperation(value = "video 진료과목별 top5 조회", notes = "live 진료과목 별 top5 조회")
-    @GetMapping("videos/topdisease")
-    public ResponseEntity<List<part2ByDiseaseRes>> getDiseaseTop7hits() {
+    @ApiOperation(value = "live 질환별 top5 조회", notes = "live 질환별 top5 조회")
+    @GetMapping("lives/topdisease")
+    public ResponseEntity<List<String>> getDiseaseTop5hits() {
 
-        return new ResponseEntity<>(videoService.getHitsByDisease(),HttpStatus.OK);
+        return new ResponseEntity<>(liveRepository.findHitsByDisease(),HttpStatus.OK);
     }
-    @ApiOperation(value = "video 질환별 top5 조회", notes = "video 질환별 top5 조회")
-    @GetMapping("videos/topnonmedical")
-    public ResponseEntity<List<part2ByNonMedicalRes>> getNonMedicalTop7hits() {
 
-        return new ResponseEntity<>(videoService.getHitsByNonMedical(),HttpStatus.OK);
-    }
 
 
     @Data
     @AllArgsConstructor
     static class Result<T> {
-        private T videoData;
+        private T liveData;
     }
 
     @Data
     @AllArgsConstructor
-    static class VideoDto {
+    static class LiveDto {
         private String title;
         private String length;
         private String date;
