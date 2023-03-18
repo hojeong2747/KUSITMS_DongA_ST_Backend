@@ -15,7 +15,7 @@ public class PageViewService {
 
     private final PageViewRepository pageViewRepository;
 
-    public List<PageView> findPageViews() { return pageViewRepository.findAll(); }
+//    public List<PageView> findPageViews() { return pageViewRepository.findAll(); }
 
 
     public List<PageView> findPageViews(int category, String date) {
