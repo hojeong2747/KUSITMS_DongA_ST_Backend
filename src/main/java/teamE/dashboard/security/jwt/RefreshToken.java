@@ -1,4 +1,4 @@
-package teamE.dashboard.security;
+package teamE.dashboard.security.jwt;
 
 import lombok.Builder;
 import lombok.Data;
@@ -20,7 +20,7 @@ public class RefreshToken {
 
     //key = email
     @Column(nullable = false, unique = false)
-    private String email;
+    private String username;
 
     @Column(nullable = false)
     private String token;
@@ -31,8 +31,8 @@ public class RefreshToken {
     }
 
     @Builder
-    public RefreshToken(String email, String token){
-        this.email = email;
+    public RefreshToken(String username, String token){
+        this.username = username;
         this.token = token;
     }
 }

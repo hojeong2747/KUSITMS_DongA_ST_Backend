@@ -1,8 +1,11 @@
 package teamE.dashboard.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +17,8 @@ import javax.xml.transform.Result;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
+@Api(tags = {"2.Video"})
 @RestController
 @RequiredArgsConstructor
 public class VideoController {
@@ -21,6 +26,7 @@ public class VideoController {
     private final VideoService videoService;
 
     // 영상 조회
+    @ApiOperation(value = "영상 전체 조회", notes = "영상 전체 조회")
     @GetMapping("videos")
     public ResponseEntity<Result> getVideos() {
         List<Video> findVideos = videoService.findVideos();
@@ -34,6 +40,7 @@ public class VideoController {
     }
 
     // top3 영상 조회
+    @ApiOperation(value = "영상 top3 조회", notes = "영상 top3 조회")
     @GetMapping("videos/top3")
     public ResponseEntity<Result> getTop3Videos() {
         List<Video> findVideos = videoService.findTop3Videos();

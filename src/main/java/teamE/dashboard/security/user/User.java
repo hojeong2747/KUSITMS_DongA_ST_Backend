@@ -1,4 +1,4 @@
-package teamE.dashboard.security;
+package teamE.dashboard.security.user;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,7 +25,7 @@ public class User implements UserDetails {
     private Long id;
 
     @Column(length = 100, nullable = false, unique = true)
-    private String email;
+    private String username;
 
     @Column(length = 100, nullable = false)
     private String password;
@@ -33,6 +33,9 @@ public class User implements UserDetails {
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
     private List<String> roles = new ArrayList<>();
+
+    @Column(length = 1000, nullable = false)
+    private String profileImg;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -43,7 +46,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return username;
     }
 
     @Override
