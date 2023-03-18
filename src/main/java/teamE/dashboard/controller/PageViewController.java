@@ -55,11 +55,11 @@ public class PageViewController {
     // 페이지뷰 카테고리별 조회
     @ApiOperation(value = "페이지뷰 카테고리별 조회", notes = "페이지뷰 카테고리별 조회")
     @PostMapping("/pageViews")
-    public ResponseEntity<Result> getPageViewsByCategory(@RequestBody PageViewDtoReq req) {
+    public ResponseEntity<Result> getPageViews(@RequestBody PageViewDtoReq req) {
         List<PageView> findPageViews = pageViewService.findPageViews(req.getCategory(), req.getDate());
 
         List<PageViewDtoRes> res = findPageViews.stream()
-                .map(m -> new PageViewDtoRes(m.getActiveUserCount(), m.getDate()))
+                .map(m -> new PageViewDtoRes(m.getDate(), m.getActiveUserCount()))
                 .collect(Collectors.toList());
 
         return new ResponseEntity<>(new Result(req.getCategory(), res), HttpStatus.OK);
@@ -89,7 +89,7 @@ public class PageViewController {
     @AllArgsConstructor
     static class PageViewDtoRes {
         //        private int category;
-        private Long activeUserCount;
         private String date;
+        private Long activeUserCount;
     }
 }
