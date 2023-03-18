@@ -9,14 +9,13 @@ import javax.persistence.Id;
 
 @Getter
 @Entity
-public class PageView {
+public class BounceRate {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int category;
-    private Long activeUserCount;
+    private Long exitUserCount;
+    private Long totalUserCount;
     private String date;
-
 }
