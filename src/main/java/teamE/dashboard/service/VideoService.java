@@ -4,9 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import teamE.dashboard.dto.part2ByDepartmentRes;
+import teamE.dashboard.dto.part2ByDiseaseRes;
+import teamE.dashboard.dto.part2ByNonMedicalRes;
 import teamE.dashboard.entity.Video;
 import teamE.dashboard.repository.VideoRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -28,6 +32,38 @@ public class VideoService {
 
     public List<Video> findTop3Videos() {
         return videoRepository.findAll(Sort.by(Sort.Direction.DESC, "hit"));
+    }
+
+    public List<part2ByDepartmentRes> getHitsByDepartment() {
+        List<String> hitsByDepartment = videoRepository.findHitsByDepartment();
+
+        List<part2ByDepartmentRes> list = new ArrayList<>();
+        for (String s : hitsByDepartment) {
+            String[] split = s.split(",");
+            list.add(new part2ByDepartmentRes(split[0],split[1]));
+        }
+        return list;
+    }
+    public List<part2ByDiseaseRes> getHitsByDisease() {
+        List<String> hitsByDisease = videoRepository.findHitsByDisease();
+
+        List<part2ByDiseaseRes> list = new ArrayList<>();
+        for (String s : hitsByDisease) {
+            String[] split = s.split(",");
+            list.add(new part2ByDiseaseRes(split[0],split[1]));
+        }
+        return list;
+    }
+
+    public List<part2ByNonMedicalRes> getHitsByNonMedical() {
+        List<String> hitsByDisease = videoRepository.findHitsByNonMedical();
+
+        List<part2ByNonMedicalRes> list = new ArrayList<>();
+        for (String s : hitsByDisease) {
+            String[] split = s.split(",");
+            list.add(new part2ByNonMedicalRes(split[0],split[1]));
+        }
+        return list;
     }
 
 
