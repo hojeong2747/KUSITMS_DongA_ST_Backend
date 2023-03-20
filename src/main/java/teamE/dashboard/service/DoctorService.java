@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import teamE.dashboard.dto.part4.userInfoByAgeRes;
 import teamE.dashboard.dto.part4.userInfoByDepartmentRes;
 import teamE.dashboard.dto.part4.userInfoByFunnelsRes;
+import teamE.dashboard.dto.part4.userInfoByRegionRes;
 import teamE.dashboard.repository.DoctorRepository;
 
 import java.util.ArrayList;
@@ -51,6 +52,18 @@ public class DoctorService {
             String columnGroup = (String) row[0];
             Number percentage = (Number) row[1];
             list.add(new userInfoByAgeRes(columnGroup, percentage.intValue()));
+        }
+        return list;
+    }
+
+    public List<userInfoByRegionRes> getTop5ByRegion() {
+        List<Object[]> userInfoByAge = doctorRepository.findUserInfoByRegion();
+
+        List<userInfoByRegionRes> list = new ArrayList<>();
+        for (Object[] row : userInfoByAge) {
+            String columnGroup = (String) row[0];
+            Number percentage = (Number) row[1];
+            list.add(new userInfoByRegionRes(columnGroup, percentage.intValue()));
         }
         return list;
     }

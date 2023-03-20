@@ -32,6 +32,14 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
             "                  ORDER BY percentage DESC")
     List<Object[]> findUserInfoByAge();
 
+    @Query(nativeQuery = true, value =
+            "SELECT CASE WHEN region IN (SELECT region FROM (SELECT region FROM doctor GROUP BY region ORDER BY COUNT(*) DESC LIMIT 5) AS top_five) THEN region \n" +
+                    "                  ELSE '기타' END AS column_group, COUNT(*) * 100.0 / (SELECT COUNT(*) FROM doctor) AS percentage \n" +
+                    "                  FROM doctor \n" +
+                    "                  GROUP BY column_group \n" +
+                    "                  ORDER BY percentage DESC")
+    List<Object[]> findUserInfoByRegion();
+
 
 
 

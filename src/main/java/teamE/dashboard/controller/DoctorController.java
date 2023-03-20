@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import teamE.dashboard.dto.part4.userInfoByAgeRes;
 import teamE.dashboard.dto.part4.userInfoByDepartmentRes;
 import teamE.dashboard.dto.part4.userInfoByFunnelsRes;
+import teamE.dashboard.dto.part4.userInfoByRegionRes;
 import teamE.dashboard.service.DoctorService;
 
 import java.util.List;
@@ -42,6 +43,13 @@ public class DoctorController {
     public ResponseEntity<List<userInfoByAgeRes>> getUserInfoByAgeTop5() {
 
         return new ResponseEntity<>(doctorService.getTop5ByAge(), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "유저 정보 지역", notes = "유저 정보 지역")
+    @GetMapping("/userInfo/region")
+    public ResponseEntity<List<userInfoByRegionRes>> getUserInfoByRegionTop5() {
+
+        return new ResponseEntity<>(doctorService.getTop5ByRegion(), HttpStatus.OK);
     }
 
 
