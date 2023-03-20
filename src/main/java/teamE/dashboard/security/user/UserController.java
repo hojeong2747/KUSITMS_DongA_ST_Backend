@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.web.bind.annotation.*;
+import teamE.dashboard.dto.part7.OnUsersRes;
 import teamE.dashboard.security.jwt.*;
 import teamE.dashboard.security.sesssion.CustomHttpSessionListener;
 import teamE.dashboard.security.user.dto.UserLoginDto;
@@ -139,15 +140,15 @@ public class UserController {
 
 
     @GetMapping("/onusers")
-    public List<String> getCount() {
+    public OnUsersRes getCount() {
 //        return SessionUserCounter.getCount();
         List<String> sessions = CustomHttpSessionListener.getSessions();
-        List<String> profiles = new ArrayList<>();
+        List<String>profiles = new ArrayList<>();
         for (String session : sessions) {
             profiles.add(userService.loadProfileImgByUsername(session));
         }
 
-        return profiles;
+        return new OnUsersRes(profiles.subList(0,3), profiles.size()-3);
     }
 
     @GetMapping("/{username}")
