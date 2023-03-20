@@ -18,6 +18,8 @@ public class Live {
     private int hit;
     private String thumbnail;
 
+    private int status; // 0 진료 1 실행중
+
     @Enumerated(EnumType.STRING)
     private Department department;
 

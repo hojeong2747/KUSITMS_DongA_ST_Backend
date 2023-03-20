@@ -1,16 +1,17 @@
 package teamE.dashboard.dto;
 
 import lombok.*;
-import teamE.dashboard.entity.Department;
 
 @Getter @Setter
 @ToString @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class part2ByDepartmentRes {
+public class part2ByLiveRes {
 
     private String subject;
     private String hits;
 
 
 }
+
+

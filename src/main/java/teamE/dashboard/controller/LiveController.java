@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import teamE.dashboard.dto.part2ByDepartmentRes;
+import teamE.dashboard.dto.part2ByLiveRes;
 import teamE.dashboard.entity.Live;
 import teamE.dashboard.entity.Video;
 import teamE.dashboard.repository.LiveRepository;
@@ -66,16 +68,16 @@ public class LiveController {
 
     @ApiOperation(value = "live 진료과목별 top5 조회", notes = "live 진료과목 별 top5 조회")
     @GetMapping("lives/topdepartment")
-    public ResponseEntity<List<String>> getDepartmentTop5hits() {
+    public ResponseEntity<List<part2ByLiveRes>> getDepartmentTop5hits() {
 
-        return new ResponseEntity<>(liveRepository.findHitsByDepartment(),HttpStatus.OK);
+        return new ResponseEntity<>(liveService.getHitsByDepartment(),HttpStatus.OK);
     }
 
     @ApiOperation(value = "live 질환별 top5 조회", notes = "live 질환별 top5 조회")
     @GetMapping("lives/topdisease")
-    public ResponseEntity<List<String>> getDiseaseTop5hits() {
+    public ResponseEntity<List<part2ByLiveRes>> getDiseaseTop5hits() {
 
-        return new ResponseEntity<>(liveRepository.findHitsByDisease(),HttpStatus.OK);
+        return new ResponseEntity<>(liveService.getHitsByDisease(),HttpStatus.OK);
     }
 
 

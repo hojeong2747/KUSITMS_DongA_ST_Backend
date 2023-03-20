@@ -18,11 +18,43 @@ public interface LiveRepository extends JpaRepository<Live, Long> {
 //    List<part2ByDepartmentRes> findHitsByDepartment();
 
 
-    @Query(nativeQuery = true, value = "select department, sum(hit) / (select sum(hit) from live ) * 100 from live group by live.department order by sum(hit) desc LIMIT 0,5 ")
+    @Query(nativeQuery = true, value = "select department, sum(hit) / (select sum(hit) from live ) * 100 from live group by live.department order by sum(hit) desc LIMIT 0,4 ")
     List<String> findHitsByDepartment();
 
-    @Query(nativeQuery = true, value = "select disease, sum(hit) / (select sum(hit) from live ) * 100 from live group by live.disease order by sum(hit) desc LIMIT 0,5 ")
+    @Query(nativeQuery = true, value = "select sum(v.t)\n" +
+            "from(\n" +
+            "        SELECT department, SUM(hit) / (SELECT SUM(hit) FROM live ) * 100 as t\n" +
+            "        FROM (\n" +
+            "                 SELECT * ,ROW_NUMBER() OVER (ORDER BY hit DESC) as rn\n" +
+            "                 FROM live\n" +
+            "                 WHERE status = 0\n" +
+            "                 group by department\n" +
+            "\n" +
+            "             ) AS v\n" +
+            "        WHERE rn > 4\n" +
+            "        GROUP BY department\n" +
+            "        ORDER BY SUM(hit) DESC\n" +
+            "    ) as v ")
+    String findHitsByDepartmentLast();
+
+    @Query(nativeQuery = true, value = "select disease, sum(hit) / (select sum(hit) from live ) * 100 from live  group by live.disease order by sum(hit) desc LIMIT 0,4 ")
     List<String> findHitsByDisease();
+
+    @Query(nativeQuery = true, value = "select sum(v.t)\n" +
+            "from(\n" +
+            "        SELECT disease, SUM(hit) / (SELECT SUM(hit) FROM live) * 100 as t\n" +
+            "        FROM (\n" +
+            "                 SELECT * ,ROW_NUMBER() OVER (ORDER BY hit DESC) as rn\n" +
+            "                 FROM live\n" +
+            "                 WHERE status = 0\n" +
+            "                 group by disease\n" +
+            "\n" +
+            "             ) AS v\n" +
+            "        WHERE rn > 4\n" +
+            "        GROUP BY disease\n" +
+            "        ORDER BY SUM(hit) DESC\n" +
+            "    ) as v ")
+    String findHitsByDiseaseLast();
 
 
 
