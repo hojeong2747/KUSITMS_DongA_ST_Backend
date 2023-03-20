@@ -4,9 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import teamE.dashboard.dto.part2ByDepartmentRes;
-import teamE.dashboard.dto.part2ByDiseaseRes;
-import teamE.dashboard.dto.part2ByNonMedicalRes;
+import teamE.dashboard.dto.part2.part2ByDepartmentRes;
+import teamE.dashboard.dto.part2.part2ByDiseaseRes;
+import teamE.dashboard.dto.part2.part2ByNonMedicalRes;
 import teamE.dashboard.entity.Video;
 import teamE.dashboard.repository.VideoRepository;
 

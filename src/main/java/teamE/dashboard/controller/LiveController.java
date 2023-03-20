@@ -10,14 +10,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import teamE.dashboard.dto.part2ByDepartmentRes;
-import teamE.dashboard.dto.part2ByLiveRes;
+import teamE.dashboard.dto.part2.part2ByLiveRes;
+import teamE.dashboard.dto.part8.LiveRes;
 import teamE.dashboard.entity.Live;
-import teamE.dashboard.entity.Video;
 import teamE.dashboard.repository.LiveRepository;
-import teamE.dashboard.repository.VideoRepository;
 import teamE.dashboard.service.LiveService;
-import teamE.dashboard.service.VideoService;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -78,6 +75,13 @@ public class LiveController {
     public ResponseEntity<List<part2ByLiveRes>> getDiseaseTop5hits() {
 
         return new ResponseEntity<>(liveService.getHitsByDisease(),HttpStatus.OK);
+    }
+
+
+    @ApiOperation(value="진행중인 라이브가 있다면 라이브 항목 return  \n 진행중인 라이브가 없을경우 각 항목 null 값 return ")
+    @GetMapping("lives/realtime")
+    public ResponseEntity<LiveRes> getRealtimeLive() {
+        return new ResponseEntity<>(liveService.getRealtimeLive(),HttpStatus.OK);
     }
 
 

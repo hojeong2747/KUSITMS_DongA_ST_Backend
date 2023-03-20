@@ -4,15 +4,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import teamE.dashboard.dto.part2ByDiseaseRes;
-import teamE.dashboard.dto.part2ByLiveRes;
+import teamE.dashboard.dto.part2.part2ByLiveRes;
+import teamE.dashboard.dto.part8.LiveRes;
 import teamE.dashboard.entity.Live;
-import teamE.dashboard.entity.Video;
 import teamE.dashboard.repository.LiveRepository;
-import teamE.dashboard.repository.VideoRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -57,5 +56,16 @@ public class LiveService {
         }
         list.add(new part2ByLiveRes("기타", liveRepository.findHitsByDepartmentLast()));
         return list;
+    }
+
+
+    public LiveRes getRealtimeLive() {
+        Optional<LiveRes> realtimeLive = liveRepository.findRealtimeLive();
+
+        if (realtimeLive.isPresent()) {
+            return realtimeLive.get();
+        }else{
+            return new LiveRes(null,null,0,null,null);
+        }
     }
 }
