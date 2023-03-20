@@ -43,7 +43,7 @@ public class LiveController {
     }
 
     // top3 영상 조회
-    @ApiOperation(value = "영상 top3 조회", notes = "영상 top3 조회")
+    @ApiOperation(value = "[part3] 영상 top3 조회", notes = "[part3] 영상 top3 조회")
     @GetMapping("lives/top3")
     public ResponseEntity<Result> getTop3Videos() {
         List<Live> findVideos = liveService.findTop3Videos();
@@ -63,14 +63,14 @@ public class LiveController {
 //        return new ResponseEntity<>(videoRepository.findHitsByDepartment(),HttpStatus.OK);
 //    }
 
-    @ApiOperation(value = "live 진료과목별 top5 조회", notes = "live 진료과목 별 top5 조회")
+    @ApiOperation(value = "[part3] live 진료과목별 top5 조회", notes = "[part3] live 진료과목 별 top5 조회")
     @GetMapping("lives/topdepartment")
     public ResponseEntity<List<part2ByLiveRes>> getDepartmentTop5hits() {
 
         return new ResponseEntity<>(liveService.getHitsByDepartment(),HttpStatus.OK);
     }
 
-    @ApiOperation(value = "live 질환별 top5 조회", notes = "live 질환별 top5 조회")
+    @ApiOperation(value = "[part3] live 질환별 top5 조회", notes = "[part3] llive 질환별 top5 조회")
     @GetMapping("lives/topdisease")
     public ResponseEntity<List<part2ByLiveRes>> getDiseaseTop5hits() {
 
@@ -78,7 +78,7 @@ public class LiveController {
     }
 
 
-    @ApiOperation(value="진행중인 라이브가 있다면 라이브 항목 return  \n 진행중인 라이브가 없을경우 각 항목 null 값 return ")
+    @ApiOperation(value="[part8] 진행중인 라이브가 있다면 라이브 항목 return  \n 진행중인 라이브가 없을경우 각 항목 null 값 return ")
     @GetMapping("lives/realtime")
     public ResponseEntity<LiveRes> getRealtimeLive() {
         return new ResponseEntity<>(liveService.getRealtimeLive(),HttpStatus.OK);
