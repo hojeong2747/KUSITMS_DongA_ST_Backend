@@ -12,11 +12,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.web.bind.annotation.*;
+import teamE.dashboard.dto.part7.OnUsersRes;
 import teamE.dashboard.security.jwt.*;
 import teamE.dashboard.security.sesssion.CustomHttpSessionListener;
 import teamE.dashboard.security.user.dto.UserLoginDto;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -51,17 +53,17 @@ public class UserController {
     }
 
     // 로그인
-    @ApiOperation(value = "로그인", notes = "로그인")
-    @PostMapping("/login")
-    public String login(@ApiParam(value = "유저", required = true)
-                            @RequestBody Map<String, String> user) {
-        User member = userRepository.findByUsername(user.get("username"))
-                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 E-MAIL 입니다."));
-        if (!passwordEncoder.matches(user.get("password"), member.getPassword())) {
-            throw new IllegalArgumentException("잘못된 비밀번호입니다.");
-        }
-        return jwtTokenProvider.createToken(member.getUsername(), member.getRoles());
-    }
+//    @ApiOperation(value = "로그인", notes = "로그인")
+//    @PostMapping("/login")
+//    public String login(@ApiParam(value = "유저", required = true)
+//                            @RequestBody Map<String, String> user) {
+//        User member = userRepository.findByUsername(user.get("username"))
+//                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 E-MAIL 입니다."));
+//        if (!passwordEncoder.matches(user.get("password"), member.getPassword())) {
+//            throw new IllegalArgumentException("잘못된 비밀번호입니다.");
+//        }
+//        return jwtTokenProvider.createToken(member.getUsername(), member.getRoles());
+//    }
 
     @GetMapping("/login/form")
     public String getLogin() {
@@ -137,10 +139,16 @@ public class UserController {
     }
 
 
-    @GetMapping("/count")
-    public List<String> getCount() {
+    @GetMapping("/onusers")
+    public OnUsersRes getCount() {
 //        return SessionUserCounter.getCount();
-        return CustomHttpSessionListener.getSessions();
+        List<String> sessions = CustomHttpSessionListener.getSessions();
+        List<String>profiles = new ArrayList<>();
+        for (String session : sessions) {
+            profiles.add(userService.loadProfileImgByUsername(session));
+        }
+
+        return new OnUsersRes(profiles.subList(0,3), profiles.size()-3);
     }
 
     @GetMapping("/{username}")
