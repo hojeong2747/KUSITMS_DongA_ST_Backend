@@ -2,18 +2,18 @@ package teamE.dashboard.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import teamE.dashboard.dto.part2VideoDto;
+import teamE.dashboard.dto.part8.LiveRes;
 import teamE.dashboard.entity.Live;
-import teamE.dashboard.entity.Video;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface LiveRepository extends JpaRepository<Live, Long> {
 
 //    @Query(value = "select v.id, v.hit, v.department,v.disease from Live v")
 //    List<part2VideoDto> findVideosALl();
 
-//    @Query(value = "select new teamE.dashboard.dto.part2ByDepartmentRes(v.department,sum(v.hit)) from Video v group by v.department " +
+//    @Query(value = "select new teamE.dashboard.dto.part2.part2ByDepartmentRes(v.department,sum(v.hit)) from Video v group by v.department " +
 //            "order by sum(v.hit) desc")
 //    List<part2ByDepartmentRes> findHitsByDepartment();
 
@@ -55,6 +55,12 @@ public interface LiveRepository extends JpaRepository<Live, Long> {
             "        ORDER BY SUM(hit) DESC\n" +
             "    ) as v ")
     String findHitsByDiseaseLast();
+
+
+
+
+    @Query(value = "select new teamE.dashboard.dto.part8.LiveRes(l.thumbnail,l.title,l.people,l.startTime,l.endTime) from Live l where l.status = 1")
+    Optional<LiveRes> findRealtimeLive();
 
 
 

@@ -11,7 +11,7 @@ public interface VideoRepository extends JpaRepository<Video, Long> {
 //    @Query(value = "select v.id, v.hit, v.department,v.disease from Video v")
 //    List<part2VideoDto> findVideosALl();
 
-//    @Query(value = "select new teamE.dashboard.dto.part2ByDepartmentRes(v.department,sum(v.hit)) from Video v group by v.department " +
+//    @Query(value = "select new teamE.dashboard.dto.part2.part2ByDepartmentRes(v.department,sum(v.hit)) from Video v group by v.department " +
 //            "order by sum(v.hit) desc")
 //    List<part2ByDepartmentRes> findHitsByDepartment();
 
