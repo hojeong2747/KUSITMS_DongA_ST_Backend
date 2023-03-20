@@ -1,4 +1,4 @@
-package teamE.dashboard.dto;
+package teamE.dashboard.dto.part2;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
