@@ -25,8 +25,4 @@ public class Doctor {
     private Region region;
     
     // 유저데이터 : doctor id, 유입경로, 연령대, 진료과, 지역
-
-
-    public Doctor() {
-    }
 }
