@@ -1,16 +1,17 @@
-package teamE.dashboard.dto;
+package teamE.dashboard.dto.part2;
 
 import lombok.*;
-
-import java.util.List;
 
 @Getter @Setter
 @ToString @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class part2ByDiseaseRes {
+public class part2ByLiveRes {
 
     private String subject;
     private String hits;
 
+
 }
+
+

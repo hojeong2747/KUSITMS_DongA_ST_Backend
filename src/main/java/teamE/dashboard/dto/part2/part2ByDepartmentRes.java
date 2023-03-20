@@ -1,4 +1,4 @@
-package teamE.dashboard.dto;
+package teamE.dashboard.dto.part2;
 
 import lombok.*;
 import teamE.dashboard.entity.Department;
@@ -9,7 +9,7 @@ import teamE.dashboard.entity.Department;
 @NoArgsConstructor
 public class part2ByDepartmentRes {
 
-    private String department;
+    private String subject;
     private String hits;
 
 

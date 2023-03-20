@@ -4,9 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import teamE.dashboard.dto.part2ByDepartmentRes;
-import teamE.dashboard.dto.part2ByDiseaseRes;
-import teamE.dashboard.dto.part2ByNonMedicalRes;
+import teamE.dashboard.dto.part2.part2ByDepartmentRes;
+import teamE.dashboard.dto.part2.part2ByDiseaseRes;
+import teamE.dashboard.dto.part2.part2ByNonMedicalRes;
 import teamE.dashboard.entity.Video;
 import teamE.dashboard.repository.VideoRepository;
 
@@ -42,6 +42,7 @@ public class VideoService {
             String[] split = s.split(",");
             list.add(new part2ByDepartmentRes(split[0],split[1]));
         }
+        list.add(new part2ByDepartmentRes("기타",videoRepository.findHitsByDepartmentLast()));
         return list;
     }
     public List<part2ByDiseaseRes> getHitsByDisease() {
@@ -52,6 +53,7 @@ public class VideoService {
             String[] split = s.split(",");
             list.add(new part2ByDiseaseRes(split[0],split[1]));
         }
+        list.add(new part2ByDiseaseRes("기타", videoRepository.findHitsByDiseaseLast()));
         return list;
     }
 
@@ -63,6 +65,7 @@ public class VideoService {
             String[] split = s.split(",");
             list.add(new part2ByNonMedicalRes(split[0],split[1]));
         }
+        list.add(new part2ByNonMedicalRes("기타", videoRepository.findHitsByNonMedicalLast()));
         return list;
     }
 

@@ -10,12 +10,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import teamE.dashboard.dto.part2.part2ByLiveRes;
+import teamE.dashboard.dto.part8.LiveRes;
 import teamE.dashboard.entity.Live;
-import teamE.dashboard.entity.Video;
 import teamE.dashboard.repository.LiveRepository;
-import teamE.dashboard.repository.VideoRepository;
 import teamE.dashboard.service.LiveService;
-import teamE.dashboard.service.VideoService;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -66,16 +65,23 @@ public class LiveController {
 
     @ApiOperation(value = "live 진료과목별 top5 조회", notes = "live 진료과목 별 top5 조회")
     @GetMapping("lives/topdepartment")
-    public ResponseEntity<List<String>> getDepartmentTop5hits() {
+    public ResponseEntity<List<part2ByLiveRes>> getDepartmentTop5hits() {
 
-        return new ResponseEntity<>(liveRepository.findHitsByDepartment(),HttpStatus.OK);
+        return new ResponseEntity<>(liveService.getHitsByDepartment(),HttpStatus.OK);
     }
 
     @ApiOperation(value = "live 질환별 top5 조회", notes = "live 질환별 top5 조회")
     @GetMapping("lives/topdisease")
-    public ResponseEntity<List<String>> getDiseaseTop5hits() {
+    public ResponseEntity<List<part2ByLiveRes>> getDiseaseTop5hits() {
 
-        return new ResponseEntity<>(liveRepository.findHitsByDisease(),HttpStatus.OK);
+        return new ResponseEntity<>(liveService.getHitsByDisease(),HttpStatus.OK);
+    }
+
+
+    @ApiOperation(value="진행중인 라이브가 있다면 라이브 항목 return  \n 진행중인 라이브가 없을경우 각 항목 null 값 return ")
+    @GetMapping("lives/realtime")
+    public ResponseEntity<LiveRes> getRealtimeLive() {
+        return new ResponseEntity<>(liveService.getRealtimeLive(),HttpStatus.OK);
     }
 
 
