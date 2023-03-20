@@ -12,7 +12,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.web.bind.annotation.*;
+
+import teamE.dashboard.dto.part5.UserInfoRes;
+
 import teamE.dashboard.dto.part7.OnUsersRes;
+
 import teamE.dashboard.security.jwt.*;
 import teamE.dashboard.security.sesssion.CustomHttpSessionListener;
 import teamE.dashboard.security.user.dto.UserLoginDto;
@@ -22,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @Api(tags = {"1.User"})
@@ -41,29 +46,18 @@ public class UserController {
     @ApiOperation(value = "회원 등록", notes = "회원 가입")
     @PostMapping("/join")
     public Long join(@ApiParam(value = "유저", required = true)
-                         @RequestBody Map<String, String> user) {
+                     @RequestBody Map<String, String> user) {
         return userRepository.save(User.builder()
                 .username(user.get("username"))
                 .password(passwordEncoder.encode(user.get("password")))
-                        .profileImg("https://pl.png")
+                .profileImg("https://pl.png")
 
                 .roles(Collections.singletonList("ROLE_USER")) // 최초 가입시 USER 로 설정
 //                .roles(Collections.singletonList("USER")) // 최초 가입시 USER 로 설정
                 .build()).getId();
     }
 
-    // 로그인
-//    @ApiOperation(value = "로그인", notes = "로그인")
-//    @PostMapping("/login")
-//    public String login(@ApiParam(value = "유저", required = true)
-//                            @RequestBody Map<String, String> user) {
-//        User member = userRepository.findByUsername(user.get("username"))
-//                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 E-MAIL 입니다."));
-//        if (!passwordEncoder.matches(user.get("password"), member.getPassword())) {
-//            throw new IllegalArgumentException("잘못된 비밀번호입니다.");
-//        }
-//        return jwtTokenProvider.createToken(member.getUsername(), member.getRoles());
-//    }
+
 
     @GetMapping("/login/form")
     public String getLogin() {
@@ -86,7 +80,7 @@ public class UserController {
                 SecurityContextHolder.getContext());
 //        session.setAttribute(user.getLoginId(),user.getLoginPw());
 //
-        log.info("session made " +session.getId());
+        log.info("session made " + session.getId());
         log.info(String.valueOf(session.isNew()));
 
 
@@ -114,7 +108,7 @@ public class UserController {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         UserDetails userDetails = (UserDetails) principal;
 
-        log.info( "welcome"+ ((UserDetails) principal).getUsername() );
+        log.info("welcome" + ((UserDetails) principal).getUsername());
 
         return jwtTokenDto;
     }
@@ -156,4 +150,16 @@ public class UserController {
         return userService.loadProfileImgByUsername(username);
     }
 
+
+    @GetMapping("/userinfo")
+    public UserInfoRes getUserInfo() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserDetails userDetails = (UserDetails) principal;
+
+        String username = ((UserDetails) principal).getUsername();
+        String profileImgByUsername = userService.loadProfileImgByUsername(username);
+//        String profileImgByUsername = null;
+
+        return new UserInfoRes(username, "최고 관리자", profileImgByUsername, "Verified Account");
+    }
 }
