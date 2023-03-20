@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import teamE.dashboard.dto.part4.userInfoByAgeRes;
+import teamE.dashboard.dto.part4.userInfoByDepartmentRes;
 import teamE.dashboard.dto.part4.userInfoByFunnelsRes;
 import teamE.dashboard.service.DoctorService;
 
@@ -29,11 +30,19 @@ public class DoctorController {
         return new ResponseEntity<>(doctorService.getTop5ByFunnels(), HttpStatus.OK);
     }
 
+    @ApiOperation(value = "유저 정보 진료과", notes = "유저 정보 진료과")
+    @GetMapping("/userInfo/department")
+    public ResponseEntity<List<userInfoByDepartmentRes>> getUserInfoByDepartmentTop5() {
+
+        return new ResponseEntity<>(doctorService.getTop5ByDepartment(), HttpStatus.OK);
+    }
+
     @ApiOperation(value = "유저 정보 연령대", notes = "유저 정보 연령대")
     @GetMapping("/userInfo/age")
     public ResponseEntity<List<userInfoByAgeRes>> getUserInfoByAgeTop5() {
 
         return new ResponseEntity<>(doctorService.getTop5ByAge(), HttpStatus.OK);
     }
+
 
 }

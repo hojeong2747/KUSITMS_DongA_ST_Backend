@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import teamE.dashboard.dto.part4.userInfoByAgeRes;
+import teamE.dashboard.dto.part4.userInfoByDepartmentRes;
 import teamE.dashboard.dto.part4.userInfoByFunnelsRes;
 import teamE.dashboard.repository.DoctorRepository;
 
@@ -27,20 +28,31 @@ public class DoctorService {
             Number percentage = (Number) row[1];
             list.add(new userInfoByFunnelsRes(columnGroup, percentage.intValue()));
         }
+        return list;
+    }
 
+    public List<userInfoByDepartmentRes> getTop5ByDepartment() {
+        List<Object[]> userInfoByDepartment = doctorRepository.findUserInfoByDepartment();
+
+        List<userInfoByDepartmentRes> list = new ArrayList<>();
+        for (Object[] row : userInfoByDepartment) {
+            String columnGroup = (String) row[0];
+            Number percentage = (Number) row[1];
+            list.add(new userInfoByDepartmentRes(columnGroup, percentage.intValue()));
+        }
         return list;
     }
 
     public List<userInfoByAgeRes> getTop5ByAge() {
-        List<Object[]> userInfoByFunnels = doctorRepository.findUserInfoByAge();
+        List<Object[]> userInfoByAge = doctorRepository.findUserInfoByAge();
 
         List<userInfoByAgeRes> list = new ArrayList<>();
-        for (Object[] row : userInfoByFunnels) {
+        for (Object[] row : userInfoByAge) {
             String columnGroup = (String) row[0];
             Number percentage = (Number) row[1];
             list.add(new userInfoByAgeRes(columnGroup, percentage.intValue()));
         }
-
         return list;
     }
+
 }
