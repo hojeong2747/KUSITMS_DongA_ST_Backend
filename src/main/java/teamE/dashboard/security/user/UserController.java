@@ -133,6 +133,7 @@ public class UserController {
     }
 
 
+    @ApiOperation(value = "[part7] 접속중인 사용자 정보", notes = "[part7] 접속중인 사용자 정보")
     @GetMapping("/onusers")
     public OnUsersRes getCount() {
 //        return SessionUserCounter.getCount();
@@ -150,7 +151,7 @@ public class UserController {
         return userService.loadProfileImgByUsername(username);
     }
 
-
+    @ApiOperation(value = "[part5] 로그인한 사용자 정보", notes = "[part5] 로그인한 사용자 정보")
     @GetMapping("/userinfo")
     public UserInfoRes getUserInfo() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
