@@ -11,4 +11,10 @@ import teamE.dashboard.repository.DoctorRepository;
 public class DoctorService {
 
     private final DoctorRepository doctorRepository;
+
+    private List<userInfoByFunnels> getUserInfoByFunnels() {
+        return doctorRepository.findUserInfoByFunnels();
+    }
+
+
 }
