@@ -44,7 +44,7 @@ public class VideoController {
     }
 
     // top3 영상 조회
-    @ApiOperation(value = "영상 top3 조회", notes = "영상 top3 조회")
+    @ApiOperation(value = "[part3] 영상 top3 조회", notes = "영상 top3 조회")
     @GetMapping("videos/top3")
     public ResponseEntity<Result> getTop3Videos() {
         List<Video> findVideos = videoService.findTop3Videos();
@@ -64,21 +64,22 @@ public class VideoController {
 //
 //        return new ResponseEntity<>(videoRepository.findHitsByDepartment(),HttpStatus.OK);
 //    }
-    @GetMapping("videos/topdepartment")
-    public ResponseEntity<List<part2ByDepartmentRes>> getDepartmentTop7hits() {
+@ApiOperation(value = "[part3] video 진료과목별 top5 조회", notes = "[part3] live 진료과목 별 top5 조회")
+@GetMapping("videos/topdepartment")
+    public ResponseEntity<List<part2ByDepartmentRes>> getDepartmentTop5hits() {
 
         return new ResponseEntity<>(videoService.getHitsByDepartment(),HttpStatus.OK);
     }
 
-    @ApiOperation(value = "video 진료과목별 top5 조회", notes = "live 진료과목 별 top5 조회")
+    @ApiOperation(value = "[part3] video 질환별 top5 조회", notes = "[part3] live 진료과목 별 top5 조회")
     @GetMapping("videos/topdisease")
-    public ResponseEntity<List<part2ByDiseaseRes>> getDiseaseTop7hits() {
+    public ResponseEntity<List<part2ByDiseaseRes>> getDiseaseTop5hits() {
 
         return new ResponseEntity<>(videoService.getHitsByDisease(),HttpStatus.OK);
     }
-    @ApiOperation(value = "video 질환별 top5 조회", notes = "video 질환별 top5 조회")
+    @ApiOperation(value = "[part3] video 비진료 top5 조회", notes = "[part3] video 비진료 top5 조회")
     @GetMapping("videos/topnonmedical")
-    public ResponseEntity<List<part2ByNonMedicalRes>> getNonMedicalTop7hits() {
+    public ResponseEntity<List<part2ByNonMedicalRes>> getNonMedicalTop5hits() {
 
         return new ResponseEntity<>(videoService.getHitsByNonMedical(),HttpStatus.OK);
     }
