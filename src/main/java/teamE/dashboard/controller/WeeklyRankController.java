@@ -30,70 +30,30 @@ public class WeeklyRankController {
 
     private final WeeklyRankService weeklyRankService;
 
-    private final WeeklyRankRepository weeklyRankRepository;
-
-    // 주간 검색어 전체 조회
-    @GetMapping("/weeklyRank/all")
-    public ResponseEntity<List<WeeklyRankRes>> getWeeklyRank() {
-        List<WeeklyRank> findWeeklyRanks = weeklyRankService.findByCurRank();
-
-        List<WeeklyRankRes> res = findWeeklyRanks.stream()
-                .map(m -> new WeeklyRankRes(m.getCurRank(), m.getKeyWord(), m.getStatus().toString()))
-                .collect(Collectors.toList());
-
-        return new ResponseEntity<>(res, HttpStatus.OK);
-    }
-
-
 //    @PostMapping("/weeklyRank/curRank")
-//    public int updateWeeklyRankCurRank(@RequestBody WeeklyRankReq req) {
-//        weeklyRankService.updateCurRank(req.getYear(), req.getMonth(), req.getWeek());
-//
-//        return 1;
-//    }
-
-//    @PostMapping("/weeklyRank/curRank")
-//    public int updateCurRanking(@RequestBody WeeklyRankReq req) {
-//        int getNewRank = weeklyRankService.updateNewRank(req.getYear(), req.getMonth(), req.getWeek() );
-//        weeklyRankService.updateCurRank(req.getYear(), req.getMonth(), req.getWeek(), getNewRank);
-//        return 1;
-//    }
-
-    // 2 또 다시
-    @PostMapping("/weeklyRank/curRank")
     public ResponseEntity<List<RowNum>> getCurRank2(@RequestBody WeeklyRankReq req) {
-        List<RowNum> rns = weeklyRankService.getUpdateCur2(req.getYear(), req.getMonth(), req.getWeek());
+        List<RowNum> rns = weeklyRankService.getUpdateCurRank(req.getYear(), req.getMonth(), req.getWeek());
 
         return new ResponseEntity<>(rns, HttpStatus.OK);
     }
 
-    @PostMapping("/weeklyRank/prevRank")
+//    @PostMapping("/weeklyRank/prevRank")
     public int updatePrevRanking(@RequestBody WeeklyRankReq req) {
         weeklyRankService.updatePrevRank(req.getYear(), req.getMonth(), req.getWeek());
 
         return 1;
     }
 
-//    @PostMapping("/weeklyRank/curRank")
-//    public List<Long> getUpdateIds(@RequestBody WeeklyRankReq req) {
-//        List<Long> findIds= weeklyRankService.findUpdateId(req.getYear(), req.getMonth(), req.getWeek());
-//        weeklyRankService.updateCurRank(findIds);
-//
-//        return findIds;
-//    }
-
-
-    @GetMapping("/weeklyRank/status")
+//    @GetMapping("/weeklyRank/status")
     public int updateWeeklyRankStatus() {
         weeklyRankService.updateStatusValue();
 
         return 1;
     }
 
-
-    @GetMapping("/weeklyRank/final")
+//    @GetMapping("/weeklyRank/final")
     public ResponseEntity<List<WeeklyRankRes>> getWeeklyRanking() {
-        List<WeeklyRank> findWeeklyRanking = weeklyRankService.findWeeklyRanking();
+        List<WeeklyRank> findWeeklyRanking = weeklyRankService.findWeeklyRankTop6();
 
         List<WeeklyRankRes> res = findWeeklyRanking.stream()
                 .map(m -> new WeeklyRankRes(m.getCurRank(), m.getKeyWord(), m.getStatus().toString()))
@@ -102,23 +62,21 @@ public class WeeklyRankController {
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
-
-    // api 하나로 합쳐보기
+    // api 하나로 합치기
+    @ApiOperation(value = "주간 검색어 순위", notes = "주간 검색어 순위")
     @PostMapping("/weeklyRank")
-    public ResponseEntity<List<WeeklyRankRes>> plz(@RequestBody WeeklyRankReq req) {
+    public ResponseEntity<List<WeeklyRankRes>> getWeeklyRankTop6(@RequestBody WeeklyRankReq req) {
         // prev = cur
         weeklyRankService.updatePrevRank(req.getYear(), req.getMonth(), req.getWeek());
 
         // cur = 새 값
-//        List<Long> findIds= weeklyRankService.findUpdateId(req.getYear(), req.getMonth(), req.getWeek());
-//        weeklyRankService.updateCurRank(findIds);
-        weeklyRankService.getUpdateCur2(req.getYear(), req.getMonth(), req.getWeek());
+        weeklyRankService.getUpdateCurRank(req.getYear(), req.getMonth(), req.getWeek());
 
         // prev, cur 비교 -> status 결정
         weeklyRankService.updateStatusValue();
 
         // final curRank 로 정렬하고 6개 뽑아서 resDto 반환
-        List<WeeklyRank> findWeeklyRanking = weeklyRankService.findWeeklyRanking();
+        List<WeeklyRank> findWeeklyRanking = weeklyRankService.findWeeklyRankTop6();
 
         List<WeeklyRankRes> res = findWeeklyRanking.stream()
                 .map(m -> new WeeklyRankRes(m.getCurRank(), m.getKeyWord(), m.getStatus().toString()))

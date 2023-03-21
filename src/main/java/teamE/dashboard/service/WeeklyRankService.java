@@ -17,49 +17,14 @@ public class WeeklyRankService {
 
     private final WeeklyRankRepository weeklyRankRepository;
 
-    // 주간 검색어 순위 전체 조회
-    public List<WeeklyRank> findByCurRank() { return weeklyRankRepository.findAll(); }
-
-
-//    @Transactional
-//    public void updateCurRank(int year, int month, int week) {
-//        weeklyRankRepository.updateCur(year, month, week);
-//    }
-
-//    @Transactional
-//    public int updateNewRank(int year, int month, int week, int hit) {
-//        return weeklyRankRepository.getNewRank(year, month, week, hit);
-//    }
-//
-//    @Transactional
-//    public void updateCurRank(int year, int month, int week, int hit, int newRank) {
-//        weeklyRankRepository.updateCur(year, month, week, hit, newRank);
-//    }
-
-//    @Transactional
-//    public int updateNewRank(int year, int month, int week) {
-//        return weeklyRankRepository.getNewRank(year, month, week);
-//    }
-//
-//    @Transactional
-//    public void updateCurRank(int year, int month, int week, int newRank) {
-//        weeklyRankRepository.updateCur(year, month, week, newRank);
-//    }
-
-    // 다시
-//    @Transactional
-//    public List<Long> findUpdateId(int year, int month, int week) {
-//        return weeklyRankRepository.findIdsToUpdate(year, month, week);
-//    }
-//    @Transactional
-//    public void updateCurRank(List<Long> ids) {
-//        weeklyRankRepository.updateCur(ids);
-//    }
+    @Transactional
+    public void updatePrevRank(int year, int month, int week) {
+        weeklyRankRepository.updatePrev(year, month, week);
+    }
 
     @Transactional
-    // 2 또 다시.
-    public List<RowNum> getUpdateCur2(int year, int month, int week) {
-        List<Object[]> rns = weeklyRankRepository.updateCur2(year, month, week);
+    public List<RowNum> getUpdateCurRank(int year, int month, int week) {
+        List<Object[]> rns = weeklyRankRepository.updateCur(year, month, week);
 
         List<RowNum> list = new ArrayList<>();
         for (Object[] row : rns) {
@@ -67,21 +32,14 @@ public class WeeklyRankService {
             Number rn = (Number) row[1];
             list.add(new RowNum(cur2_id.longValue(), rn.intValue()));
         }
-        System.out.println("list = " + list);
 
         List<WeeklyRank> rankList = new ArrayList<>();
         for (RowNum rn : list) {
             WeeklyRank wr = weeklyRankRepository.findById(rn.getCur2_id()).orElse(null);
-            System.out.println("wr.getId() = " + wr.getId());
-            System.out.println("wr.getCurRank() = " + wr.getCurRank());
             wr.setCurRank(rn.getRn());
-            System.out.println("rn.getRn() = " + rn.getRn());
             WeeklyRank saveRank = weeklyRankRepository.saveAndFlush(wr);
-            System.out.println("saveRank.getCurRank() = " + saveRank.getCurRank());
             rankList.add(wr);
         }
-        weeklyRankRepository.saveAllAndFlush(rankList);
-        System.out.println("rankList = " + rankList.toString());
 
         return list;
     }
@@ -91,12 +49,7 @@ public class WeeklyRankService {
         weeklyRankRepository.updateStatus();
     }
 
-    @Transactional
-    public void updatePrevRank(int year, int month, int week) {
-        weeklyRankRepository.updatePrev(year, month, week);
-    }
-
-    public List<WeeklyRank> findWeeklyRanking() {
+    public List<WeeklyRank> findWeeklyRankTop6() {
         return weeklyRankRepository.findWeeklyRank();
     }
 }

@@ -10,53 +10,18 @@ import java.util.List;
 
 public interface WeeklyRankRepository extends JpaRepository<WeeklyRank, Long> {
 
+    // 1. prev = cur
+    @Modifying(clearAutomatically = true)
+    @Query("UPDATE WeeklyRank w SET w.prevRank = w.curRank WHERE w.year = :year AND w.month = :month AND w.week = :week")
+    void updatePrev(@Param("year") int year, @Param("month") int month, @Param("week") int week);
 
-    // 2? cur = 새 값
-    // 헐 성공..
-//    @Query(value = "SELECT COUNT(*) + 1 FROM WeeklyRank wr WHERE wr.year = :year AND wr.month = :month AND wr.week = :week")
-//    int getNewRank(@Param("year") int year, @Param("month") int month, @Param("week") int week);
-//
-//    @Modifying(clearAutomatically = true)
-//    @Query(value = "UPDATE WeeklyRank w SET w.curRank = :newRank WHERE w.year = :year AND w.month = :month AND w.week = :week")
-//    void updateCur(@Param("year") int year, @Param("month") int month, @Param("week") int week, @Param("newRank") int newRank);
-
-    // 성공 함, 근데 hit..
-//    @Query(value = "SELECT COUNT(*) + 1 FROM WeeklyRank wr WHERE wr.year = :year AND wr.month = :month AND wr.week = :week AND wr.hit > :hit")
-//    int getNewRank(@Param("year") int year, @Param("month") int month, @Param("week") int week, @Param("hit") int hit);
-//
-//    @Modifying(clearAutomatically = true)
-//    @Query(value = "UPDATE WeeklyRank w SET w.curRank = :newRank WHERE w.year = :year AND w.month = :month AND w.week = :week AND w.hit = :hit")
-//    void updateCur(@Param("year") int year, @Param("month") int month, @Param("week") int week, @Param("hit") int hit, @Param("newRank") int newRank);
-
-    // 다시 처음으로.. inner join , 1093..
-//    @Modifying(clearAutomatically = true)
-//    @Query(value = "UPDATE WeeklyRank w\n" +
-//            "SET w.curRank = ( SELECT COUNT(*) + 1 FROM WeeklyRank wr " +
-//            "  WHERE wr.year = :year AND wr.month = :month AND wr.week = :week AND wr.hit > w.hit) " +
-//            "  WHERE w.year = :year AND w.month = :month AND w.week = :week ")
-//    void updateCur(@Param("year") int year, @Param("month") int month, @Param("week") int week);
-
-
-    // 2 다시.
-//    @Modifying(clearAutomatically = true)
-//    @Query(value = "SELECT w.id FROM WeeklyRank w " +
-//            "WHERE w.year = :year AND w.month = :month AND w.week = :week " +
-//            "AND w.hit > (SELECT MAX(wr.hit) FROM WeeklyRank wr " +
-//            "WHERE wr.year = :year AND wr.month = :month AND wr.week = :week)")
-//    List<Long> findIdsToUpdate(@Param("year") int year, @Param("month") int month, @Param("week") int week);
-//    @Modifying(clearAutomatically = true)
-//    @Query(value = "UPDATE WeeklyRank w " +
-//            "SET w.curRank = w.curRank + 1 " +
-//            "WHERE w.id IN (:ids)")
-//    void updateCur(@Param("ids") List<Long> ids);
-
-    // 2 또 다시.
+    // 2. cur = 새 값
     @Query(value = "select id, ROW_NUMBER() OVER(order by hit DESC) as rn\n" +
             "    from weekly_rank where year = :year and month = :month and week = :week order by id ", nativeQuery = true)
-    List<Object[]> updateCur2(@Param("year") int year, @Param("month") int month, @Param("week") int week);
+    List<Object[]> updateCur(@Param("year") int year, @Param("month") int month, @Param("week") int week);
 
 
-    // 3? status 결정
+    // 3. status 결정
     @Modifying(clearAutomatically = true)
     @Query(value = "UPDATE WeeklyRank w " +
             "SET w.status = CASE " +
@@ -67,20 +32,8 @@ public interface WeeklyRankRepository extends JpaRepository<WeeklyRank, Long> {
             "WHERE w.prevRank IS NOT NULL AND w.curRank IS NOT NULL")
     void updateStatus();
 
-    // 4. 최종 curRank 정렬해서 6개 보내기
+    // 4. 최종 curRank 정렬 후 상위 6개 보내기
     @Query(value = "select * from weekly_rank w order by w.cur_rank ASC LIMIT 0,6", nativeQuery = true)
     List<WeeklyRank> findWeeklyRank();
-
-
-    // 1? prev = cur
-//    @Modifying(clearAutomatically = true)
-//    @Query(value = "update weekly_rank w set w.prev_rank = w.cur_rank where w.year = :year and w.month = :month and w.week = :week")
-//    void updatePrev(@Param("year") int year, @Param("month") int month, @Param("week") int week);
-
-    @Modifying(clearAutomatically = true)
-    @Query("UPDATE WeeklyRank w SET w.prevRank = w.curRank WHERE w.year = :year AND w.month = :month AND w.week = :week")
-    void updatePrev(@Param("year") int year, @Param("month") int month, @Param("week") int week);
-
-
 
 }
