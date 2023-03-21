@@ -18,7 +18,7 @@ public class WeeklyRank {
     private int week; // 1->첫째주
     private String keyWord;
     private Long hit; // 검색수
-
+    // hit 사용해서 메서드 쓸 때 int 로 바꿨다가 hit 필요 없어서 다시 Long 으로 바꿔놓음.
     private int prevRank; // 이전 등수
     private int curRank; // 현재 등수
     @Enumerated(EnumType.STRING)

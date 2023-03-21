@@ -11,4 +11,5 @@ public class WeeklyRankReq {
     private int year;
     private int month;
     private int week;
+//    private int hit;
 }

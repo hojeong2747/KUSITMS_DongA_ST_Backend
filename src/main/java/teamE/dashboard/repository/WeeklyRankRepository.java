@@ -1,41 +1,66 @@
 package teamE.dashboard.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import teamE.dashboard.entity.WeeklyRank;
 
 public interface WeeklyRankRepository extends JpaRepository<WeeklyRank, Long> {
 //
-//    // 1? prev = cur
-//    @Query(nativeQuery = true, value =
-//            "update weekly_rank w set w.prev_rank = w.cur_rank where w.year = 2023 and w.month = 3 and w.week = 2")
-//    void updatePrev(); // 이 형태가 가능한지도 모르겠음
+    // 1? prev = cur
+    @Modifying(clearAutomatically = true)
+    @Query(value =
+            "update WeeklyRank w set w.prevRank = w.curRank where w.year = :year and w.month = :month and w.week = :week")
+    void updatePrev(@Param("year") int year, @Param("month") int month, @Param("week") int week);
+
+    // 2? cur = 새 값
+//    @Modifying(clearAutomatically = true)
+//    @Query(value = "UPDATE WeeklyRank w\n" +
+//            "SET w.curRank = (\n" +
+//            "  SELECT COUNT(*) + 1\n" +
+//            "  FROM WeeklyRank wr\n" +
+//            "  WHERE wr.year = :year AND wr.month = :month AND wr.week = :week AND wr.hit > w.hit\n" +
+//            ")\n" +
+//            "WHERE w.year = :year AND w.month = :month AND w.week = :week\n")
+//    void updateCur(@Param("year") int year, @Param("month") int month, @Param("week") int week);
+
+    // 서버 실행되는데 api 연결 안 됨. update 안 됨.
+//    @Modifying(clearAutomatically = true)
+//    @Query(value = "UPDATE WeeklyRank w\n" +
+//            "SET w.curRank = ( SELECT COUNT(*) + 1 FROM WeeklyRank wr " +
+//            "  WHERE wr.year = :year AND wr.month = :month AND wr.week = :week AND wr.hit > w.hit) " +
+//            "  WHERE w.year = :year AND w.month = :month AND w.week = :week ")
+//    void updateCur(@Param("year") int year, @Param("month") int month, @Param("week") int week);
+
+    // 성공 함, 근데 hit..
+//    @Query(value = "SELECT COUNT(*) + 1 FROM WeeklyRank wr WHERE wr.year = :year AND wr.month = :month AND wr.week = :week AND wr.hit > :hit")
+//    int getNewRank(@Param("year") int year, @Param("month") int month, @Param("week") int week, @Param("hit") int hit);
 //
-//    // 2? cur = 새 값
-//    @Query(nativeQuery = true, value =
-//            "UPDATE weekly_rank w\n" +
-//                    "INNER JOIN (\n" +
-//                    "  SELECT id, hit, \n" +
-//                    "         (SELECT COUNT(*) + 1\n" +
-//                    "          FROM weekly_rank wr\n" +
-//                    "          WHERE wr.year = 2023 AND wr.month = 3 AND wr.week = 2 AND wr.hit > w.hit) AS new_rank\n" +
-//                    "  FROM weekly_rank w\n" +
-//                    "  WHERE w.year = 2023 AND w.month = 3 AND w.week = 2\n" +
-//                    ") AS temp\n" +
-//                    "ON w.id = temp.id\n" +
-//                    "SET w.cur_rank = temp.new_rank")
-//    void updateCur();
-//
-//    // 3? status 결정
-//    @Query(nativeQuery = true, value =
-//            "UPDATE weekly_rank\n" +
-//                    "SET status = \n" +
-//                    "  CASE\n" +
-//                    "    WHEN prev_rank > cur_rank THEN 'UP'\n" +
-//                    "    WHEN prev_rank < cur_rank THEN 'DOWN'\n" +
-//                    "    ELSE 'KEEP'\n" +
-//                    "  END")
-//    void updateStatus();
+//    @Modifying(clearAutomatically = true)
+//    @Query(value = "UPDATE WeeklyRank w SET w.curRank = :newRank WHERE w.year = :year AND w.month = :month AND w.week = :week AND w.hit = :hit")
+//    void updateCur(@Param("year") int year, @Param("month") int month, @Param("week") int week, @Param("hit") int hit, @Param("newRank") int newRank);
+
+    // 헐 성공..
+    @Query(value = "SELECT COUNT(*) + 1 FROM WeeklyRank wr WHERE wr.year = :year AND wr.month = :month AND wr.week = :week")
+    int getNewRank(@Param("year") int year, @Param("month") int month, @Param("week") int week);
+
+    @Modifying(clearAutomatically = true)
+    @Query(value = "UPDATE WeeklyRank w SET w.curRank = :newRank WHERE w.year = :year AND w.month = :month AND w.week = :week")
+    void updateCur(@Param("year") int year, @Param("month") int month, @Param("week") int week, @Param("newRank") int newRank);
+
+
+    // 3? status 결정
+    @Modifying(clearAutomatically = true)
+    @Query(value = "UPDATE WeeklyRank w " +
+            "SET w.status = CASE " +
+            "  WHEN w.prevRank IS NOT NULL AND w.curRank IS NOT NULL AND w.prevRank > w.curRank THEN 'UP' " +
+            "  WHEN w.prevRank IS NOT NULL AND w.curRank IS NOT NULL AND w.prevRank < w.curRank THEN 'DOWN' " +
+            "  ELSE 'KEEP' " +
+            "END " +
+            "WHERE w.prevRank IS NOT NULL AND w.curRank IS NOT NULL")
+    void updateStatus();
+
 
 
 }

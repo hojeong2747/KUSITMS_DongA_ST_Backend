@@ -7,7 +7,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import teamE.dashboard.dto.part6.WeeklyRankReq;
 import teamE.dashboard.dto.part6.WeeklyRankRes;
 import teamE.dashboard.entity.Video;
 import teamE.dashboard.entity.WeeklyRank;
@@ -34,5 +37,34 @@ public class WeeklyRankController {
                 .collect(Collectors.toList());
 
         return new ResponseEntity<>(res, HttpStatus.OK);
+    }
+
+
+//    @PostMapping("/weeklyRank/curRank")
+//    public int updateWeeklyRankCurRank(@RequestBody WeeklyRankReq req) {
+//        weeklyRankService.updateCurRank(req.getYear(), req.getMonth(), req.getWeek());
+//
+//        return 1;
+//    }
+
+    @PostMapping("/weeklyRank/curRank")
+    public int updateCurRanking(@RequestBody WeeklyRankReq req) {
+        int getNewRank = weeklyRankService.updateNewRank(req.getYear(), req.getMonth(), req.getWeek() );
+        weeklyRankService.updateCurRank(req.getYear(), req.getMonth(), req.getWeek(), getNewRank);
+        return 1;
+    }
+
+    @GetMapping("/weeklyRank/status")
+    public int updateWeeklyRankStatus() {
+        weeklyRankService.updateStatusValue();
+
+        return 1;
+    }
+
+    @PostMapping("/weeklyRank/prevRank")
+    public int updatePrevRanking(@RequestBody WeeklyRankReq req) {
+        weeklyRankService.updatePrevRank(req.getYear(), req.getMonth(), req.getWeek());
+
+        return 1;
     }
 }
