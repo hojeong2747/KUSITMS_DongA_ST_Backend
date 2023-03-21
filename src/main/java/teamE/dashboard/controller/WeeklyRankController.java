@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -47,12 +48,29 @@ public class WeeklyRankController {
 //        return 1;
 //    }
 
-    @PostMapping("/weeklyRank/curRank")
-    public int updateCurRanking(@RequestBody WeeklyRankReq req) {
-        int getNewRank = weeklyRankService.updateNewRank(req.getYear(), req.getMonth(), req.getWeek() );
-        weeklyRankService.updateCurRank(req.getYear(), req.getMonth(), req.getWeek(), getNewRank);
+//    @PostMapping("/weeklyRank/curRank")
+//    public int updateCurRanking(@RequestBody WeeklyRankReq req) {
+//        int getNewRank = weeklyRankService.updateNewRank(req.getYear(), req.getMonth(), req.getWeek() );
+//        weeklyRankService.updateCurRank(req.getYear(), req.getMonth(), req.getWeek(), getNewRank);
+//        return 1;
+//    }
+
+    @PostMapping("/weeklyRank/prevRank")
+    public int updatePrevRanking(@RequestBody WeeklyRankReq req) {
+        weeklyRankService.updatePrevRank(req.getYear(), req.getMonth(), req.getWeek());
+
         return 1;
     }
+
+    @PostMapping("/weeklyRank/curRank")
+    public int getUpdateIds(@RequestBody WeeklyRankReq req) {
+        List<Long> findIds= weeklyRankService.findUpdateId(req.getYear(), req.getMonth(), req.getWeek());
+
+        weeklyRankService.updateCurRank(findIds);
+
+        return 1;
+    }
+
 
     @GetMapping("/weeklyRank/status")
     public int updateWeeklyRankStatus() {
@@ -61,10 +79,15 @@ public class WeeklyRankController {
         return 1;
     }
 
-    @PostMapping("/weeklyRank/prevRank")
-    public int updatePrevRanking(@RequestBody WeeklyRankReq req) {
-        weeklyRankService.updatePrevRank(req.getYear(), req.getMonth(), req.getWeek());
 
-        return 1;
+    @GetMapping("/weeklyRank/final")
+    public ResponseEntity<List<WeeklyRankRes>> getWeeklyRanking() {
+        List<WeeklyRank> findWeeklyRanking = weeklyRankService.findWeeklyRanking();
+
+        List<WeeklyRankRes> res = findWeeklyRanking.stream()
+                .map(m -> new WeeklyRankRes(m.getCurRank(), m.getKeyWord(), m.getStatus().toString()))
+                .collect(Collectors.toList());
+
+        return new ResponseEntity<>(res, HttpStatus.OK);
     }
 }

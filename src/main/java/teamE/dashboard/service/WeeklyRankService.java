@@ -34,14 +34,24 @@ public class WeeklyRankService {
 //        weeklyRankRepository.updateCur(year, month, week, hit, newRank);
 //    }
 
-    @Transactional
-    public int updateNewRank(int year, int month, int week) {
-        return weeklyRankRepository.getNewRank(year, month, week);
-    }
+//    @Transactional
+//    public int updateNewRank(int year, int month, int week) {
+//        return weeklyRankRepository.getNewRank(year, month, week);
+//    }
+//
+//    @Transactional
+//    public void updateCurRank(int year, int month, int week, int newRank) {
+//        weeklyRankRepository.updateCur(year, month, week, newRank);
+//    }
 
+    // 다시
     @Transactional
-    public void updateCurRank(int year, int month, int week, int newRank) {
-        weeklyRankRepository.updateCur(year, month, week, newRank);
+    public List<Long> findUpdateId(int year, int month, int week) {
+        return weeklyRankRepository.findIdsToUpdate(year, month, week);
+    }
+    @Transactional
+    public void updateCurRank(List<Long> ids) {
+        weeklyRankRepository.updateCur(ids);
     }
 
     @Transactional
@@ -52,5 +62,9 @@ public class WeeklyRankService {
     @Transactional
     public void updatePrevRank(int year, int month, int week) {
         weeklyRankRepository.updatePrev(year, month, week);
+    }
+
+    public List<WeeklyRank> findWeeklyRanking() {
+        return weeklyRankRepository.findWeeklyRank();
     }
 }
