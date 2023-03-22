@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import teamE.dashboard.dto.part3.BounceRateDtoReq;
+import teamE.dashboard.dto.part3.BounceRateDtoRes;
 import teamE.dashboard.entity.BounceRate;
 import teamE.dashboard.service.BounceRateService;
 
@@ -33,7 +35,7 @@ public class BounceRateController {
         List<BounceRate> findBounceRates = bounceRateService.findBounceRates(req.getDate());
 
         List<BounceRateDtoRes> res = findBounceRates.stream()
-                .map(m -> new BounceRateDtoRes(m.getDate(), m.getExitUserCount(), m.getTotalUserCount(), ((double)m.getExitUserCount()/m.getTotalUserCount())*100))
+                .map(m -> new BounceRateDtoRes(Integer.parseInt(m.getDate().substring(8)), m.getExitUserCount(), m.getTotalUserCount(), Double.valueOf(String.format("%.02f", (((double)m.getExitUserCount()/m.getTotalUserCount()) * 100)))))
                 .collect(Collectors.toList());
 
         return new ResponseEntity<>(new Result(res), HttpStatus.OK);
@@ -45,23 +47,23 @@ public class BounceRateController {
         private T result;
     }
 
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    static class BounceRateDtoReq {
-        private String date;
-
-    }
-
-
-    @Data
-    @AllArgsConstructor
-    static class BounceRateDtoRes {
-        private String date;
-        private Long exitUserCount;
-
-        private Long totalUserCount;
-
-        private double bounceRate; // 이탈률 퍼센트 -> 우선 double 형으로 계산
-    }
+//    @Data
+//    @NoArgsConstructor
+//    @AllArgsConstructor
+//    static class BounceRateDtoReq {
+//        private String date;
+//
+//    }
+//
+//
+//    @Data
+//    @AllArgsConstructor
+//    static class BounceRateDtoRes {
+//        private String date;
+//        private Long exitUserCount;
+//
+//        private Long totalUserCount;
+//
+//        private double bounceRate; // 이탈률 퍼센트 -> 우선 double 형으로 계산
+//    }
 }
