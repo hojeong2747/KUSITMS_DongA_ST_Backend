@@ -10,6 +10,8 @@ import java.util.List;
 public interface BounceRateRepository extends JpaRepository<BounceRate, Long> {
 
     @Query(value = "select * from bounce_rate b " +
-            "where b.date > date_sub(CONVERT(:date, DATE), interval 4 day)", nativeQuery = true)
+            "where b.date > date_sub(CONVERT(:date, DATE), interval 14 day) " +
+            "and b.date <= CONVERT(:date, DATE) " +
+            "order by date", nativeQuery = true)
     List<BounceRate> findBounceRates(@Param("date") String date);
 }
