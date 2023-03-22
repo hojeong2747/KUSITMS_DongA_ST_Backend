@@ -13,6 +13,7 @@ import teamE.dashboard.dto.part3.PageViewDtoRes;
 import teamE.dashboard.entity.PageView;
 import teamE.dashboard.service.PageViewService;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,6 +35,7 @@ public class PageViewController {
         List<PageViewDtoRes> res = findPageViews.stream()
                 .map(m -> new PageViewDtoRes(Integer.parseInt(m.getDate().substring(8)), m.getActiveUserCount()))
                 .collect(Collectors.toList());
+        Collections.sort(res);
 
         return new ResponseEntity<>(new Result(req.getCategory(), res), HttpStatus.OK);
     }
