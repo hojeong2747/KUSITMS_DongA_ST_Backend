@@ -46,24 +46,4 @@ public class BounceRateController {
     static class Result<T> {
         private T result;
     }
-
-//    @Data
-//    @NoArgsConstructor
-//    @AllArgsConstructor
-//    static class BounceRateDtoReq {
-//        private String date;
-//
-//    }
-//
-//
-//    @Data
-//    @AllArgsConstructor
-//    static class BounceRateDtoRes {
-//        private String date;
-//        private Long exitUserCount;
-//
-//        private Long totalUserCount;
-//
-//        private double bounceRate; // 이탈률 퍼센트 -> 우선 double 형으로 계산
-//    }
 }
