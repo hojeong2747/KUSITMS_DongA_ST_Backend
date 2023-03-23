@@ -9,6 +9,6 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class userInfoByFunnelsRes {
-    private String funnelsGroup;
+    private String group;
     private int percentage;
 }
