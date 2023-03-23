@@ -9,6 +9,6 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class userInfoByDepartmentRes {
-    private String departmentGroup;
+    private String group;
     private int percentage;
 }

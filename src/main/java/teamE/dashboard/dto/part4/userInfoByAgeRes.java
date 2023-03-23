@@ -9,6 +9,6 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class userInfoByAgeRes {
-    private String ageGroup;
+    private String group;
     private int percentage;
 }
