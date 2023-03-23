@@ -33,7 +33,7 @@ public class PageViewController {
         List<PageView> findPageViews = pageViewService.findPageViews(req.getCategory(), req.getDate());
 
         List<PageViewDtoRes> res = findPageViews.stream()
-                .map(m -> new PageViewDtoRes(Integer.parseInt(m.getDate().substring(8)), m.getActiveUserCount()))
+                .map(m -> new PageViewDtoRes(Integer.parseInt(m.getDate().substring(8))+"일", m.getActiveUserCount()))
                 .collect(Collectors.toList());
         Collections.sort(res);
 

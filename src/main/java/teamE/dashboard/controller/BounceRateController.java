@@ -36,9 +36,10 @@ public class BounceRateController {
         List<BounceRate> findBounceRates = bounceRateService.findBounceRates(req.getDate());
 
         List<BounceRateDtoRes> res = findBounceRates.stream()
-                .map(m -> new BounceRateDtoRes(Integer.parseInt(m.getDate().substring(8)), m.getRv(), m.getUv(), m.getUv() - m.getRv(), (int)(((double)m.getRv()/m.getUv()) * 100), (int)(((double)(m.getUv() - m.getRv())/m.getUv()) * 100)))
+                .map(m -> new BounceRateDtoRes(Integer.parseInt(m.getDate().substring(8))+"일", m.getUv() - m.getRv(), m.getRv(), m.getUv(), (int)(((double)m.getRv()/m.getUv()) * 100), (int)(((double)(m.getUv() - m.getRv())/m.getUv()) * 100)))
                 .collect(Collectors.toList());
 //        Collections.sort(res);
+
 
         return new ResponseEntity<>(new Result(res), HttpStatus.OK);
     }

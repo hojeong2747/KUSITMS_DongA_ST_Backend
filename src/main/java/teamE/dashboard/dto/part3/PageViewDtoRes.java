@@ -10,7 +10,13 @@ import lombok.*;
 @NoArgsConstructor
 public class PageViewDtoRes implements Comparable<PageViewDtoRes> {
     private int date; // String -> day 만 int 로 전송
+    private String d;
     private Long pageView;
+
+    public PageViewDtoRes(String d, Long pageView) {
+        this.d = d;
+        this.pageView = pageView;
+    }
 
     @Override
     public int compareTo(PageViewDtoRes p) {
