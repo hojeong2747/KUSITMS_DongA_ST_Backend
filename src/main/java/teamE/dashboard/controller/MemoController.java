@@ -28,7 +28,7 @@ public class MemoController {
     }
 
     @ResponseBody
-    @ApiOperation(value="메모 생성",notes = "멤모 생성")
+    @ApiOperation(value="메모 생성",notes = "메모 생성. 로그인한 사용자로 이름 등록되니 로그인 후 create 부탁드립니다. ㅎㅎ")
     @PostMapping("/memos/add")
     public ResponseEntity<MemoRes> addMemo(@RequestBody MemoReq memoReq) {
         return new ResponseEntity<>(memoService.createMemos(memoReq), HttpStatus.OK);
