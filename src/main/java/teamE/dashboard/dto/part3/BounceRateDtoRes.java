@@ -7,11 +7,12 @@ import lombok.Data;
 @AllArgsConstructor
 public class BounceRateDtoRes implements Comparable<BounceRateDtoRes> {
     private int date;
-    private Long exitUserCount;
+    private Long nv;
+    private Long rv;
+    private Long uv;
 
-    private Long totalUserCount;
-
-    private double bounceRate; // 이탈률 퍼센트 -> 우선 double 형으로 계산
+    private int rvPercentage; // 이탈률 퍼센트 -> 우선 double 형으로 계산 -> 재방문률
+    private int nvPercentage; // 신규방문률
 
     @Override
     public int compareTo(BounceRateDtoRes b) {

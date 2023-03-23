@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
-@Api(tags = {"4.BounceRate"})
+@Api(tags = {"4.UV"})
 @RestController
 @RequiredArgsConstructor
 public class BounceRateController {
@@ -30,13 +30,13 @@ public class BounceRateController {
     private final BounceRateService bounceRateService;
 
     // 이탈률 조회
-    @ApiOperation(value = "이탈률 조회", notes = "이탈률 조회")
-    @PostMapping("/bounceRates")
+    @ApiOperation(value = "UV, 재방문률, 신규방문률 조회", notes = "UV, 재방문률, 신규방문률 조회")
+    @PostMapping("/uv")
     public ResponseEntity<Result> getBounceRate(@RequestBody BounceRateDtoReq req) {
         List<BounceRate> findBounceRates = bounceRateService.findBounceRates(req.getDate());
 
         List<BounceRateDtoRes> res = findBounceRates.stream()
-                .map(m -> new BounceRateDtoRes(Integer.parseInt(m.getDate().substring(8)), m.getExitUserCount(), m.getTotalUserCount(), Double.valueOf(String.format("%.02f", (((double)m.getExitUserCount()/m.getTotalUserCount()) * 100)))))
+                .map(m -> new BounceRateDtoRes(Integer.parseInt(m.getDate().substring(8)), m.getRv(), m.getUv(), m.getUv() - m.getRv(), (int)(((double)m.getRv()/m.getUv()) * 100), (int)(((double)(m.getUv() - m.getRv())/m.getUv()) * 100)))
                 .collect(Collectors.toList());
 //        Collections.sort(res);
 
