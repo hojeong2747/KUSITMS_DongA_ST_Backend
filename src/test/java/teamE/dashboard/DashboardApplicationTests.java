@@ -12,17 +12,6 @@ import teamE.dashboard.config.aws.AwsS3Service;
 @SpringBootTest
 class DashboardApplicationTests {
 
-//	@Autowired
-//	private S3UploadService s3UploadService;
-//
-//	@DisplayName("저장된 이미지(볼펜) 찾기")
-//	@Test
-//	public void findImg() {
-//		String imgPath = s3UploadService.getThumbnailPath("pl.png");
-//		log.info(imgPath);
-//		Assertions.assertThat(imgPath).isNotNull();
-//	}
-
     @Autowired
     private AwsS3Service s3UploadService;
 
@@ -30,7 +19,6 @@ class DashboardApplicationTests {
     @Test
     public void findImg() {
         String imgPath = s3UploadService.getThumbnailPath("pl.png");
-//        log.info(imgPath);
         Assertions.assertThat(imgPath).isNotNull();
     }
 
