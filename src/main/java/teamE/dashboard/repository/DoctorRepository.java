@@ -25,8 +25,8 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
     List<Object[]> findUserInfoByDepartment();
 
     @Query(nativeQuery = true, value =
-            "SELECT CASE WHEN age IN (SELECT age FROM (SELECT age FROM doctor GROUP BY age ORDER BY COUNT(*) DESC LIMIT 5) AS top_five) THEN age \n" +
-            "                  ELSE '기타' END AS column_group, COUNT(*) * 100.0 / (SELECT COUNT(*) FROM doctor) AS percentage \n" +
+            "SELECT CASE WHEN age IN (SELECT age FROM (SELECT age FROM doctor GROUP BY age ORDER BY COUNT(*) DESC LIMIT 6) AS top_five) THEN age \n" +
+            "                  END AS column_group, COUNT(*) * 100.0 / (SELECT COUNT(*) FROM doctor) AS percentage \n" +
             "                  FROM doctor \n" +
             "                  GROUP BY column_group \n" +
             "                  ORDER BY percentage DESC")

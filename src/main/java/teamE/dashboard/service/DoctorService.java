@@ -7,10 +7,13 @@ import teamE.dashboard.dto.part4.userInfoByAgeRes;
 import teamE.dashboard.dto.part4.userInfoByDepartmentRes;
 import teamE.dashboard.dto.part4.userInfoByFunnelsRes;
 import teamE.dashboard.dto.part4.userInfoByRegionRes;
+import teamE.dashboard.entity.Age;
 import teamE.dashboard.repository.DoctorRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.lang.String.valueOf;
 
 @Service
 @Transactional(readOnly = true)
@@ -51,7 +54,12 @@ public class DoctorService {
         for (Object[] row : userInfoByAge) {
             String columnGroup = (String) row[0];
             Number percentage = (Number) row[1];
-            list.add(new userInfoByAgeRes(columnGroup, percentage.intValue()));
+            System.out.println(columnGroup);
+            if (Age.valueOf(columnGroup).getAgeNum() == 70) {
+                list.add(new userInfoByAgeRes(Age.valueOf(columnGroup).getAgeNum() + "대 이상", percentage.intValue()));
+            } else {
+                list.add(new userInfoByAgeRes(Age.valueOf(columnGroup).getAgeNum() + "대", percentage.intValue()));
+            }
         }
         return list;
     }
