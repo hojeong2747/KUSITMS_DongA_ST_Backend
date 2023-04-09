@@ -70,7 +70,7 @@ public class LiveController {
         return new ResponseEntity<>(liveService.getHitsByDepartment(),HttpStatus.OK);
     }
 
-    @ApiOperation(value = "[part3] live 질환별 top5 조회", notes = "[part3] llive 질환별 top5 조회")
+    @ApiOperation(value = "[part3] live 질환별 top5 조회", notes = "[part3] live 질환별 top5 조회")
     @GetMapping("lives/topdisease")
     public ResponseEntity<List<part2ByLiveRes>> getDiseaseTop5hits() {
 

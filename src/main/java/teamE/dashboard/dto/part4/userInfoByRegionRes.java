@@ -8,7 +8,7 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class userInfoByFunnelsRes {
+public class userInfoByRegionRes {
     private String group;
     private int percentage;
 }

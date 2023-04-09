@@ -1,6 +1,7 @@
 package teamE.dashboard.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +14,7 @@ import teamE.dashboard.repository.VideoRepository;
 import java.util.ArrayList;
 import java.util.List;
 
+//@Slf4j
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -43,6 +45,7 @@ public class VideoService {
             list.add(new part2ByDepartmentRes(split[0],split[1]));
         }
         list.add(new part2ByDepartmentRes("기타",videoRepository.findHitsByDepartmentLast()));
+//        log.info("기타"+videoRepository.findHitsByDepartmentLast());
         return list;
     }
     public List<part2ByDiseaseRes> getHitsByDisease() {

@@ -36,7 +36,7 @@ public class VideoController {
         List<Video> findVideos = videoService.findVideos();
 
         List<VideoDto> collect = findVideos.stream()
-                .map(m -> new VideoDto(m.getTitle(), m.getLength(), m.getDate(), m.getHit(), m.getThumbnail()))
+                .map(m -> new VideoDto(m.getTitle(), m.getLength(), m.getDate(), m.getHit(), m.getThumbnail(),m.getAge(),m.getLink()))
                 .collect(Collectors.toList());
 
         return new ResponseEntity<>(new Result(collect), HttpStatus.OK);
@@ -50,7 +50,7 @@ public class VideoController {
         List<Video> findVideos = videoService.findTop3Videos();
 
         List<VideoDto> collect = findVideos.stream()
-                .map(m -> new VideoDto(m.getTitle(), m.getLength(), m.getDate(), m.getHit(), m.getThumbnail()))
+                .map(m -> new VideoDto(m.getTitle(), m.getLength(), m.getDate(), m.getHit(), m.getThumbnail(),m.getAge(),m.getLink()))
                 .limit(3) // 3개만
                 .collect(Collectors.toList());
 
@@ -99,6 +99,8 @@ public class VideoController {
         private String date;
         private int hit;
         private String thumbnail;
+        private String age;
+        private String link;
     }
 
 

@@ -23,7 +23,7 @@ public interface VideoRepository extends JpaRepository<Video, Long> {
     List<String> findHitsByDepartment();
     @Query(nativeQuery = true, value = "select sum(v.t)\n" +
             "from(\n" +
-            "        SELECT department, SUM(hit) / (SELECT SUM(hit) FROM video WHERE status = 1) * 100 as t\n" +
+            "        SELECT department, SUM(hit) / (SELECT SUM(hit) FROM video WHERE status = 0) * 100 as t\n" +
             "        FROM (\n" +
             "                 SELECT * ,ROW_NUMBER() OVER (ORDER BY hit DESC) as rn\n" +
             "                 FROM video\n" +
@@ -42,7 +42,7 @@ public interface VideoRepository extends JpaRepository<Video, Long> {
 
     @Query(nativeQuery = true, value = "select sum(v.t)\n" +
             "from(\n" +
-            "        SELECT disease, SUM(hit) / (SELECT SUM(hit) FROM video WHERE status = 1) * 100 as t\n" +
+            "        SELECT disease, SUM(hit) / (SELECT SUM(hit) FROM video WHERE status = 0) * 100 as t\n" +
             "        FROM (\n" +
             "                 SELECT * ,ROW_NUMBER() OVER (ORDER BY hit DESC) as rn\n" +
             "                 FROM video\n" +
@@ -65,7 +65,7 @@ public interface VideoRepository extends JpaRepository<Video, Long> {
             "        FROM (\n" +
             "                 SELECT * ,ROW_NUMBER() OVER (ORDER BY hit DESC) as rn\n" +
             "                 FROM video\n" +
-            "                 WHERE status = 0\n" +
+            "                 WHERE status = 1\n" +
             "                 group by non_medical\n" +
             "\n" +
             "             ) AS v\n" +

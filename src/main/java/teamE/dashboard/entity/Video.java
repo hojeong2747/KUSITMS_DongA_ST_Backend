@@ -20,6 +20,9 @@ public class Video {
 
     private int status; // 0 진료 1 비진료
 
+    private String age;
+    private String link;
+
     @Enumerated(EnumType.STRING)
     private Department department;
 
